@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardHeader } from '@/app/components/ui/Card';
 import { Badge } from '@/app/components/ui/Badge';
-import { Play, Pause, Edit, Trash2, Copy, BarChart } from 'lucide-react';
+import { Play, Pause, Edit, Trash2, Copy, BarChart } from '@/app/components/SafeIcons';
 
 const strategies = [
   { id: 1, name: 'Dual Momentum Alpha', type: 'Trend Following', status: 'Running', return: '+45.2%', risk: 'Medium', version: 'v2.1' },

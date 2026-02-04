@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Share2, Lock, Globe, Users } from 'lucide-react';
+import { Share2, Lock, Globe, Users } from '@/app/components/SafeIcons';
 
 export const DataSharing = () => {
   return (

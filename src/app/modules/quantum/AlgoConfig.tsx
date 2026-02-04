@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Settings, Play, RefreshCcw } from 'lucide-react';
+import { Settings, Play, RefreshCcw } from '@/app/components/SafeIcons';
 
 export const AlgoConfig = () => {
   return (

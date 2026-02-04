@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { FileText, Download, Share2, Printer } from 'lucide-react';
+import { FileText, Download, Share2, Printer } from '@/app/components/SafeIcons';
 
 const REPORTS = [
   { id: 1, title: '2024-03-28 风控日报', type: '日报', status: '已生成', risk: 'Low' },

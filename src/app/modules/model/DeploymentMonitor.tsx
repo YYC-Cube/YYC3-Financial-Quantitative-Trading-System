@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Server, Activity, Power, AlertTriangle } from 'lucide-react';
+import { Server, Activity, Power, AlertTriangle } from '@/app/components/SafeIcons';
 
 export const DeploymentMonitor = () => {
   return (

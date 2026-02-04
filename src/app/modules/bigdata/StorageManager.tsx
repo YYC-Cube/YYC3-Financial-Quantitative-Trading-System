@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { HardDrive, Server, Archive, RefreshCw } from 'lucide-react';
+import { HardDrive, Server, Archive, RefreshCw } from '@/app/components/SafeIcons';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
 const STORAGE_DATA = [

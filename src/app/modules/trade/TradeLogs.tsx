@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Calendar, Download, Filter, FileText } from 'lucide-react';
+import { Calendar, Download, Filter, FileText } from '@/app/components/SafeIcons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const STATS_DATA = [

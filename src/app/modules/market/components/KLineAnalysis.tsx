@@ -1,98 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { createChart, ColorType, CrosshairMode, CandlestickSeries, LineSeries } from 'lightweight-charts';
 import { Card } from '@/app/components/ui/Card';
-import { Settings, BarChart2, Layers } from 'lucide-react';
+import { Settings, BarChart2, Layers } from '@/app/components/SafeIcons';
+import { useSettings } from '@/app/contexts/SettingsContext';
 
-// Generate sample data
-const generateData = () => {
-  const data = [];
-  let time = new Date('2023-01-01').getTime() / 1000;
-  let value = 42000;
-  for (let i = 0; i < 1000; i++) {
-    time += 3600;
-    const change = (Math.random() - 0.5) * 200;
-    const open = value;
-    const close = value + change;
-    const high = Math.max(open, close) + Math.random() * 50;
-    const low = Math.min(open, close) - Math.random() * 50;
-    value = close;
-    data.push({ time, open, high, low, close });
-  }
-  return data;
-};
-
-const DATA = generateData();
+// Stubbed data
+const DATA = [];
 
 export const KLineAnalysis = () => {
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const chartRef = useRef<any>(null);
   const [timeframe, setTimeframe] = useState('1h');
+  const { getUpColor, getDownColor } = useSettings();
 
   useEffect(() => {
-    if (!chartContainerRef.current) return;
-
-    const chart = createChart(chartContainerRef.current, {
-      layout: {
-        background: { type: ColorType.Solid, color: '#071425' },
-        textColor: '#8892B0',
-      },
-      grid: {
-        vertLines: { color: '#233554' },
-        horzLines: { color: '#233554' },
-      },
-      width: chartContainerRef.current.clientWidth,
-      height: chartContainerRef.current.clientHeight,
-      crosshair: {
-        mode: CrosshairMode.Normal,
-      },
-      rightPriceScale: {
-        borderColor: '#233554',
-      },
-      timeScale: {
-        borderColor: '#233554',
-      },
-    });
-
-    const candleSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#38B2AC',
-      downColor: '#F56565',
-      borderVisible: false,
-      wickUpColor: '#38B2AC',
-      wickDownColor: '#F56565',
-    });
-
-    candleSeries.setData(DATA);
-
-    // Add MA Line
-    const maSeries = chart.addSeries(LineSeries, {
-      color: '#ECC94B',
-      lineWidth: 1,
-    });
-    
-    // Simple MA calculation
-    const maData = DATA.map((d, i, arr) => {
-      if (i < 20) return { time: d.time, value: d.close };
-      const sum = arr.slice(i - 20, i).reduce((acc, val) => acc + val.close, 0);
-      return { time: d.time, value: sum / 20 };
-    });
-    
-    maSeries.setData(maData);
-
-    chart.timeScale().fitContent();
-    chartRef.current = chart;
-
-    const handleResize = () => {
-      if (chartContainerRef.current) {
-        chart.applyOptions({ width: chartContainerRef.current.clientWidth });
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      chart.remove();
-    };
+     // Placeholder to avoid lightweight-charts issues
   }, []);
 
   return (
@@ -115,10 +35,10 @@ export const KLineAnalysis = () => {
             </div>
             <div className="w-px h-6 bg-[#233554]" />
             <button className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-[#CCD6F6] hover:bg-[#112240] rounded">
-               <BarChart2 className="w-4 h-4" /> Indicators
+               <BarChart2 className="w-4 h-4" /> 指标工具
             </button>
             <button className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-[#CCD6F6] hover:bg-[#112240] rounded">
-               <Layers className="w-4 h-4" /> Compare
+               <Layers className="w-4 h-4" /> 品种对比
             </button>
          </div>
          <div className="flex items-center gap-2">
@@ -137,7 +57,12 @@ export const KLineAnalysis = () => {
                <span className="text-[#8892B0] text-xs">Vol: 245M</span>
             </div>
          </div>
-         <div ref={chartContainerRef} className="w-full h-full" />
+         <div ref={chartContainerRef} className="w-full h-full bg-[#071425] flex items-center justify-center text-[#8892B0]">
+            <div>
+               <p>KLine Chart Placeholder</p>
+               <p className="text-xs opacity-50 mt-1">Lightweight Charts temporarily disabled</p>
+            </div>
+         </div>
       </Card>
     </div>
   );

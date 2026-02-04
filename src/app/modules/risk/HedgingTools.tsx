@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { ShieldCheck, Activity } from 'lucide-react';
+import { ShieldCheck, Activity } from '@/app/components/SafeIcons';
 
 const HEDGE_DATA = Array.from({ length: 20 }, (_, i) => ({
   time: i,

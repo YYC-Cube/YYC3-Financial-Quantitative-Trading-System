@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from '@/app/components/ui/Card';
 import { KLineChart } from '@/app/components/KLineChart';
-import { Settings, Maximize2, Share2, PlusCircle, Layers } from 'lucide-react';
+import { Settings, Maximize2, Share2, PlusCircle, Layers } from '@/app/components/SafeIcons';
 
 const PERIODS = ['1m', '5m', '15m', '30m', '1h', '4h', '1D', '1W'];
 

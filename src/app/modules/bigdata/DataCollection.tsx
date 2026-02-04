@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Filter, Play, Pause, Settings } from 'lucide-react';
+import { Filter, Play, Pause, Settings } from '@/app/components/SafeIcons';
 
 export const DataCollection = () => {
   return (

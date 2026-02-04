@@ -14,6 +14,10 @@ export default defineConfig({
     alias: {
       // Alias @ to the src directory
       '@': path.resolve(__dirname, './src'),
+      // Force all three.js imports to use the same instance
+      'three': path.resolve(__dirname, './node_modules/three'),
+      // Prevent react-force-graph-3d from being loaded
+      'react-force-graph-3d': path.resolve(__dirname, './src/app/utils/empty-module.ts'),
     },
   },
 })

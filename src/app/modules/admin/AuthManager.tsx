@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Users, Shield, Edit, Trash2, Plus } from 'lucide-react';
+import { Users, Shield, Edit, Trash2, Plus } from '@/app/components/SafeIcons';
 
 const USERS = [
   { id: 1, name: 'Alex Quant', email: 'alex@cloudhub.io', role: 'Super Admin', status: 'Active', lastLogin: '2024-01-29 10:25' },

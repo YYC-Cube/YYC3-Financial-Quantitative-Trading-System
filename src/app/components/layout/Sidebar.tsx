@@ -1,9 +1,11 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+// import { ChevronRight } from '@/app/components/SafeIcons';
+import { MODULES, MENUS } from '@/app/data/navigation';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { MENUS } from '@/app/data/navigation';
+
+// Inline ChevronRight to avoid import issues
+const ChevronRight = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>;
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -27,29 +29,24 @@ export const Sidebar = ({ module, activeSub, setActiveSub, activeTertiary, setAc
               <span className="text-sm font-semibold">{menu.name}</span>
               <ChevronRight className={cn("w-4 h-4 transition-transform", activeSub === menu.id && "rotate-90")} />
             </button>
-            <AnimatePresence>
-              {activeSub === menu.id && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mt-1 ml-4 space-y-1 border-l border-[#233554]"
-                >
-                  {menu.sub.map((s: string) => (
-                    <button 
-                      key={s} 
-                      onClick={() => setActiveTertiary && setActiveTertiary(s)}
-                      className={cn(
-                        "w-full text-left px-4 py-1.5 text-xs transition-colors rounded-r-sm",
-                        activeTertiary === s ? "text-[#38B2AC] font-medium bg-[#38B2AC]/10" : "text-[#8892B0] hover:text-[#4299E1] hover:bg-[#112240]/30"
-                      )}
-                    >
-                      {s}
-                    </button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {activeSub === menu.id && (
+              <div 
+                className="mt-1 ml-4 space-y-1 border-l border-[#233554]"
+              >
+                {menu.sub.map((s: string) => (
+                  <button 
+                    key={s} 
+                    onClick={() => setActiveTertiary && setActiveTertiary(s)}
+                    className={cn(
+                      "w-full text-left px-4 py-1.5 text-xs transition-colors rounded-r-sm",
+                      activeTertiary === s ? "text-[#38B2AC] font-medium bg-[#38B2AC]/10" : "text-[#8892B0] hover:text-[#4299E1] hover:bg-[#112240]/30"
+                    )}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

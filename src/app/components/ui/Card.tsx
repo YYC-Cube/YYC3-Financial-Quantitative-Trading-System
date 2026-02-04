@@ -8,18 +8,15 @@ function cn(...inputs: ClassValue[]) {
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "rounded-lg border border-[#233554] bg-[#112240] text-[#CCD6F6] shadow-md",
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-);
+export const Card = ({ className, ...props }: CardProps) => {
+  return (
+    <div
+      className={cn(
+        "rounded-lg border border-[#233554] bg-[#112240] text-[#CCD6F6] shadow-md",
+        className
+      )}
+      {...props}
+    />
+  );
+};
 Card.displayName = "Card";

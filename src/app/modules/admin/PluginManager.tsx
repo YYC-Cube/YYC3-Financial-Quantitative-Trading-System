@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Box, Plug, Key, Settings, Trash2, Power } from 'lucide-react';
+import { Box, Plug, Key, Settings, Trash2, Power } from '@/app/components/SafeIcons';
 
 export const PluginManager = () => {
   return (

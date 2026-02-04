@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { AlertTriangle, CheckCircle, Flame } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Flame } from '@/app/components/SafeIcons';
 
 const SCENARIOS = [
   { id: '2008', name: '2008 金融危机', desc: 'S&P 500 下跌 50%, 波动率飙升', severity: 'high' },

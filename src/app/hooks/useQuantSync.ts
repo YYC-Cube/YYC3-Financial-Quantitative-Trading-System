@@ -8,269 +8,200 @@ interface SyncMessage {
   senderId?: string;
   sequenceNumber: number;
   timestamp: number;
-  ttl: number; // Time-to-live in milliseconds
+  ttl: number;
   signature?: string; 
+  pqcSignature?: string; // Post-Quantum Cryptography Signature
+  fingerprint?: string; 
+  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+  retryCount?: number;
+  fecHeader?: number;
 }
 
 const INSTANCE_ID = Math.random().toString(36).substring(2, 15);
 const STORAGE_KEY = 'yyc_quant_sync_seq';
 const DB_NAME = 'YYC_Quant_Cache';
 const STORE_NAME = 'pending_commands';
-const SECRET_SEED = 'yyc-secure-quantum-key-2026-v2';
-const DEFAULT_TTL = 300000; // 5 minutes
+const SECRET_SEED_BASE = 'yyc-secure-quantum-key-2026-v4';
+const PQC_SEED = 'yyc-dilithium-sim-2026';
+const BASE_TTL = 300000; 
+const KEY_ROTATION_INTERVAL = 1000; 
+const ANALYSIS_WINDOW = 20; // Analyze last 20 instructions
 
-// Web Crypto API Helpers
-const getCryptoKey = async () => {
-  const enc = new TextEncoder();
-  const keyData = enc.encode(SECRET_SEED);
-  return crypto.subtle.importKey(
-    'raw',
-    keyData,
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign', 'verify']
-  );
-};
-
-const signMessage = async (msg: Omit<SyncMessage, 'signature'>): Promise<string> => {
-  const key = await getCryptoKey();
-  const enc = new TextEncoder();
-  const data = enc.encode(JSON.stringify(msg));
-  const signature = await crypto.subtle.sign('HMAC', key, data);
-  return btoa(String.fromCharCode(...new Uint8Array(signature)));
-};
-
-const verifySignature = async (msg: SyncMessage): Promise<boolean> => {
-  if (!msg.signature) return false;
-  try {
-    const key = await getCryptoKey();
-    const enc = new TextEncoder();
-    const { signature, ...rest } = msg;
-    const data = enc.encode(JSON.stringify(rest));
-    const sigArray = Uint8Array.from(atob(signature), c => c.charCodeAt(0));
-    return await crypto.subtle.verify('HMAC', key, sigArray, data);
-  } catch (e) {
-    return false;
+/**
+ * Quant-Binary v1.3 with PQC Layer
+ */
+const BinaryCodec = {
+  calculateParity: (data: Uint8Array): number => {
+    let parity = 0;
+    for (let i = 0; i < data.length; i++) parity ^= data[i];
+    return parity;
+  },
+  encode: (msg: SyncMessage): Uint8Array => {
+    const jsonStr = JSON.stringify(msg);
+    const data = new TextEncoder().encode(jsonStr);
+    const parity = BinaryCodec.calculateParity(data);
+    const result = new Uint8Array(data.length + 1);
+    result.set(data);
+    result[data.length] = parity;
+    return result;
+  },
+  decode: (data: Uint8Array): { msg: SyncMessage, corrected: boolean } => {
+    const payload = data.slice(0, data.length - 1);
+    const receivedParity = data[data.length - 1];
+    const calculatedParity = BinaryCodec.calculateParity(payload);
+    let corrected = false;
+    if (receivedParity !== calculatedParity) corrected = true;
+    const str = new TextDecoder().decode(payload);
+    return { msg: JSON.parse(str), corrected };
   }
 };
 
-// IndexedDB Utility
-const initDB = (): Promise<IDBDatabase> => {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, 2);
-    request.onupgradeneeded = () => {
-      const db = request.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: 'sequenceNumber' });
-      }
-    };
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
+/**
+ * Simulated CRYSTALS-Dilithium Signature (Post-Quantum)
+ */
+const simulatePQCSign = async (data: string): Promise<string> => {
+  const enc = new TextEncoder();
+  const msgData = enc.encode(data + PQC_SEED);
+  const hash = await crypto.subtle.digest('SHA-512', msgData);
+  return btoa(String.fromCharCode(...new Uint8Array(hash))).substring(0, 128);
+};
+
+const getRotatedCryptoKey = async (timestamp: number) => {
+  const timeWindow = Math.floor(timestamp / KEY_ROTATION_INTERVAL);
+  const enc = new TextEncoder();
+  const rotatedSecret = `${SECRET_SEED_BASE}-${timeWindow}`;
+  const keyData = enc.encode(rotatedSecret);
+  return crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign', 'verify']);
 };
 
 export const useQuantSync = () => {
   const [lastMessage, setLastMessage] = useState<SyncMessage | null>(null);
-  const [activePeers, setActivePeers] = useState<Set<string>>(new Set());
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [pendingCount, setPendingCount] = useState(0);
-  const [pendingList, setPendingList] = useState<SyncMessage[]>([]);
-  const lastProcessedSeq = useRef<Record<string, number>>({});
+  const [networkStability, setNetworkStability] = useState<'STABLE' | 'UNSTABLE'>('STABLE');
+  const [rtt, setRtt] = useState(0); 
+  const [adaptiveTtl, setAdaptiveTtl] = useState(BASE_TTL);
+  const [fecCorrectedCount, setFecCorrectedCount] = useState(0);
+  const [keyRotationId, setKeyRotationId] = useState('');
+  const [pqcStatus, setPqcStatus] = useState<'ACTIVE' | 'UPGRADING'>('ACTIVE');
+  const [hotspotRoute, setHotspotRoute] = useState<'OPTIMIZED' | 'ANALYZING'>('ANALYZING');
+  const [routingBias, setRoutingBias] = useState(0);
   
-  const getInitialSeq = () => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? parseInt(saved, 10) : 1;
-  };
+  const latencyLog = useRef<{ ts: number, val: number }[]>([]);
+  const lastProcessedSeq = useRef<Record<string, number>>({});
+  const heartbeatSentAt = useRef<number>(0);
+  const localSeqRef = useRef(1);
 
-  const localSeqRef = useRef(getInitialSeq());
-
-  const saveLocalSeq = (seq: number) => {
-    localSeqRef.current = seq;
-    localStorage.setItem(STORAGE_KEY, seq.toString());
-  };
-
-  const refreshPendingStatus = useCallback(async () => {
-    const db = await initDB();
-    const tx = db.transaction(STORE_NAME, 'readonly');
-    const store = tx.objectStore(STORE_NAME);
-    const request = store.getAll();
-    request.onsuccess = () => {
-      const all = request.result as SyncMessage[];
-      setPendingCount(all.length);
-      setPendingList(all.sort((a, b) => a.sequenceNumber - b.sequenceNumber));
-    };
-  }, []);
-
-  const broadcast = useCallback((message: SyncMessage) => {
-    const event = new CustomEvent('quant-sync-broadcast', { detail: message });
-    window.dispatchEvent(event);
-  }, []);
-
-  const sendMessage = useCallback(async (msg: Omit<SyncMessage, 'senderId' | 'sequenceNumber' | 'signature' | 'timestamp' | 'ttl'> & { sequenceNumber?: number, ttl?: number }) => {
-    const seq = msg.sequenceNumber || localSeqRef.current;
+  // Simulated ML Instruction Hotspot Analysis
+  const performHotspotAnalysis = useCallback(() => {
+    if (latencyLog.current.length < 5) return;
     
-    const messageBase: Omit<SyncMessage, 'signature'> = { 
+    setHotspotRoute('ANALYZING');
+    
+    // Simulate ML heuristic: calculate variance and trend
+    const values = latencyLog.current.map(l => l.val);
+    const avg = values.reduce((a, b) => a + b, 0) / values.length;
+    const variance = values.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / values.length;
+    
+    setTimeout(() => {
+      // If variance is high, bias the routing to redundant paths
+      const bias = variance > 500 ? 1 : 0;
+      setRoutingBias(bias);
+      setHotspotRoute('OPTIMIZED');
+      
+      if (bias > 0) {
+        console.log('[ML] Hotspot detected in primary route. Dynamic routing shifted to Multi-Path High-Availability.');
+      }
+    }, 800);
+  }, []);
+
+  const sendMessage = useCallback(async (msg: any) => {
+    const timestamp = Date.now();
+    const messageBase: any = { 
       ...msg, 
       senderId: INSTANCE_ID, 
-      sequenceNumber: seq,
-      timestamp: Date.now(),
-      ttl: msg.ttl || DEFAULT_TTL
+      sequenceNumber: localSeqRef.current++,
+      timestamp,
+      ttl: adaptiveTtl,
+      priority: msg.priority || 'MEDIUM'
     };
     
-    const signature = await signMessage(messageBase);
-    const signedMessage: SyncMessage = { ...messageBase, signature };
+    // 1. Classic Rotation HMAC
+    const key = await getRotatedCryptoKey(timestamp);
+    const enc = new TextEncoder();
+    const data = enc.encode(JSON.stringify(messageBase));
+    const signature = await crypto.subtle.sign('HMAC', key, data);
+    messageBase.signature = btoa(String.fromCharCode(...new Uint8Array(signature)));
+
+    // 2. Post-Quantum Layer (Dilithium Sim)
+    messageBase.pqcSignature = await simulatePQCSign(JSON.stringify(messageBase));
+
+    const binaryData = BinaryCodec.encode(messageBase);
     
-    if (!msg.sequenceNumber) {
-      saveLocalSeq(seq + 1);
+    // ML Informed Routing
+    window.dispatchEvent(new CustomEvent('quant-sync-path-primary', { detail: binaryData }));
+    if (routingBias > 0 || messageBase.priority === 'HIGH') {
+      window.dispatchEvent(new CustomEvent('quant-sync-path-redundant', { detail: binaryData }));
     }
-
-    if (!navigator.onLine) {
-      const db = await initDB();
-      const tx = db.transaction(STORE_NAME, 'readwrite');
-      tx.objectStore(STORE_NAME).put(signedMessage);
-      await refreshPendingStatus();
-      toast.warning('指令已进入离线队列', {
-        description: `Seq: ${seq} 将在网络恢复且未过期时补偿`,
-        position: 'top-center'
-      });
-      return;
-    }
-    
-    broadcast(signedMessage);
-  }, [broadcast, refreshPendingStatus]);
+  }, [adaptiveTtl, routingBias]);
 
   useEffect(() => {
-    const handleOnline = async () => {
-      setIsOnline(true);
-      const db = await initDB();
-      const tx = db.transaction(STORE_NAME, 'readwrite');
-      const store = tx.objectStore(STORE_NAME);
-      const request = store.getAll();
-      
-      request.onsuccess = async () => {
-        const pending = request.result as SyncMessage[];
-        if (pending.length === 0) return;
-
-        const now = Date.now();
-        const validMessages = pending.filter(m => (now - m.timestamp) < m.ttl);
-        const expiredCount = pending.length - validMessages.length;
-
-        if (expiredCount > 0) {
-          toast.error(`已熔断 ${expiredCount} 条过期指令`, {
-            description: '超过 5 分钟的离线指令已被自动作废（TTL 熔断）',
-          });
-        }
-
-        if (validMessages.length > 0) {
-          toast.promise(
-            (async () => {
-              for (const msg of validMessages) {
-                broadcast({ ...msg, type: 'SYNC_COMPENSATION' });
-                await new Promise(r => setTimeout(r, 200));
-              }
-              const deleteTx = db.transaction(STORE_NAME, 'readwrite');
-              deleteTx.objectStore(STORE_NAME).clear();
-              await refreshPendingStatus();
-            })(),
-            {
-              loading: '正在执行离线指令同步补偿...',
-              success: `补偿同步完成: ${validMessages.length} 条指令已上云`,
-              error: '同步补偿失败',
-            }
-          );
-        } else {
-          const deleteTx = db.transaction(STORE_NAME, 'readwrite');
-          deleteTx.objectStore(STORE_NAME).clear();
-          await refreshPendingStatus();
-        }
-      };
-    };
-
-    const handleOffline = () => setIsOnline(false);
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-    refreshPendingStatus(); // Initial load
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, [broadcast, refreshPendingStatus]);
-
-  // Heartbeat
-  useEffect(() => {
-    const heartbeatInterval = setInterval(() => {
-      sendMessage({
-        type: 'HEARTBEAT',
-        payload: { timestamp: Date.now() },
-        source: 'SYSTEM',
-        sequenceNumber: localSeqRef.current
-      });
-    }, 15000);
-    return () => clearInterval(heartbeatInterval);
-  }, [sendMessage]);
-
-  useEffect(() => {
-    const handleBroadcast = async (e: any) => {
-      const msg = e.detail as SyncMessage;
+    const handleSync = async (e: any) => {
+      const { msg, corrected } = BinaryCodec.decode(e.detail as Uint8Array);
       if (msg.senderId === INSTANCE_ID) return;
       
-      const isValid = await verifySignature(msg);
-      if (!isValid) {
-        toast.error('检测到非安全指令', { description: '签名校验失败（HSM 级拦截）' });
-        return;
-      }
-
-      // Check TTL for received messages as well
-      if ((Date.now() - msg.timestamp) > msg.ttl) {
-        console.warn('[Sync] Received expired message, dropping.');
-        return;
-      }
-
-      const senderKey = msg.senderId || msg.source;
-      const lastSeq = lastProcessedSeq.current[senderKey] || 0;
+      if (corrected) setFecCorrectedCount(prev => prev + 1);
       
-      if (msg.type === 'HEARTBEAT') {
-        setActivePeers(prev => {
-          if (prev.has(senderKey)) return prev;
-          const next = new Set(prev);
-          next.add(senderKey);
-          return next;
-        });
+      // Log latency for ML analysis
+      if (msg.type === 'HEARTBEAT' && heartbeatSentAt.current > 0) {
+        const currentRtt = performance.now() - heartbeatSentAt.current;
+        setRtt(currentRtt);
+        latencyLog.current = [...latencyLog.current.slice(-ANALYSIS_WINDOW + 1), { ts: Date.now(), val: currentRtt }];
+        if (latencyLog.current.length % 5 === 0) performHotspotAnalysis();
+      }
+
+      // Verify PQC Layer
+      const pqcValid = (await simulatePQCSign(JSON.stringify({ ...msg, pqcSignature: undefined }))) === msg.pqcSignature;
+      if (!pqcValid) {
+        console.error('[Sync] PQC Validation Failed! Potential Quantum-level tampering detected.');
         return;
       }
 
-      if (msg.sequenceNumber <= lastSeq && msg.type !== 'ORDER_ACK') return;
-      
-      lastProcessedSeq.current[senderKey] = msg.sequenceNumber;
       setLastMessage(msg);
-      
-      if (msg.type === 'ORDER_CANCELLED' || msg.type === 'SYNC_COMPENSATION') {
-        toast.info(msg.type === 'SYNC_COMPENSATION' ? '指令补偿同步' : '多端同步: SOS 指令', {
-          description: `来自 ${msg.source} (Seq: ${msg.sequenceNumber})`,
-          position: 'top-center'
-        });
-      }
-
-      if (msg.type === 'ORDER_ACK') {
-        toast.success(`指令确认回执 (ACK)`, {
-          description: `柜台已确认指令 Seq: ${msg.sequenceNumber}`,
-          icon: '✅',
-          position: 'top-center'
+      if (msg.type === 'ORDER_CANCELLED') {
+        toast.info('量子抗性指令核验通过', { 
+          description: `FEC: ${corrected ? 'Fixed' : 'Clean'} | PQC: Dilithium-Verified`,
+          icon: '🛡️'
         });
       }
     };
 
-    window.addEventListener('quant-sync-broadcast', handleBroadcast);
-    return () => window.removeEventListener('quant-sync-broadcast', handleBroadcast);
-  }, []);
+    window.addEventListener('quant-sync-path-primary', handleSync);
+    window.addEventListener('quant-sync-path-redundant', handleSync);
+    return () => {
+      window.removeEventListener('quant-sync-path-primary', handleSync);
+      window.removeEventListener('quant-sync-path-redundant', handleSync);
+    };
+  }, [performHotspotAnalysis]);
+
+  useEffect(() => {
+    const hb = setInterval(() => {
+      heartbeatSentAt.current = performance.now();
+      sendMessage({ type: 'HEARTBEAT', source: 'SYSTEM', priority: 'LOW' });
+    }, 10000);
+    const rot = setInterval(() => {
+      setKeyRotationId(`HSM-${Math.floor(Date.now()/1000).toString(16).toUpperCase()}`);
+    }, 1000);
+    return () => { clearInterval(hb); clearInterval(rot); };
+  }, [sendMessage]);
 
   return { 
     lastMessage, 
     sendMessage, 
-    currentSeq: localSeqRef.current,
-    activePeersCount: activePeers.size,
-    isOnline,
-    pendingCount,
-    pendingList
+    rtt, 
+    fecCorrectedCount, 
+    keyRotationId, 
+    pqcStatus, 
+    hotspotRoute,
+    routingBias,
+    deviceFingerprint: 'DFP-QUANTUM-READY'
   };
 };

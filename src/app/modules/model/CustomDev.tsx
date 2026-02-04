@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Code, Terminal, Play, Save, Bug } from 'lucide-react';
+import { Code, Terminal, Play, Save, Bug } from '@/app/components/SafeIcons';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs';
 import 'prismjs/components/prism-python';

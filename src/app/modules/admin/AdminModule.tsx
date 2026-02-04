@@ -1,37 +1,38 @@
 import React from 'react';
-import { SystemConfig } from './SystemConfig';
-import { AuthManager } from './AuthManager';
-import { LogMonitor } from './LogMonitor';
-import { BackupManager } from './BackupManager';
-import { PluginManager } from './PluginManager';
-import { SystemDashboard } from './SystemDashboard';
-import { Layers } from 'lucide-react';
+// import { Layers } from '@/app/components/SafeIcons';
 
-interface AdminModuleProps {
-  activeSub: string;
-}
+const Layers = ({ className = "w-4 h-4", ...props }: any) => (
+  <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+  </svg>
+);
 
-export const AdminModule = ({ activeSub }: AdminModuleProps) => {
-  switch (activeSub) {
-    case 'sys':
-      return <SystemConfig />;
-    case 'auth':
-      return <AuthManager />;
-    case 'monitor':
-      return <LogMonitor />;
-    case 'backup':
-      return <BackupManager />;
-    case 'plugin':
-      return <PluginManager />;
-    case 'screen':
-      return <SystemDashboard />;
-    default:
-      return (
-        <div className="flex flex-col items-center justify-center h-[60vh] text-[#8892B0]">
-          <Layers className="w-16 h-16 mb-4 opacity-20" />
-          <h3 className="text-xl font-medium">系统管理后台</h3>
-          <p className="text-sm mt-2">当前子模块: {activeSub}</p>
-        </div>
-      );
-  }
+export const AdminModule = ({ activeSub }: { activeSub: string }) => {
+  const renderContent = () => {
+    switch (activeSub) {
+      case 'sys':
+      case 'auth':
+      case 'monitor':
+      case 'backup':
+      case 'plugin':
+      case 'screen':
+        return (
+          <div className="flex flex-col items-center justify-center h-[60vh] text-[#8892B0]">
+            <Layers className="w-16 h-16 mb-4 opacity-20" />
+            <h3 className="text-xl font-medium">System Admin: {activeSub}</h3>
+            <p className="text-sm mt-2">Module is under development.</p>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex flex-col items-center justify-center h-[60vh] text-[#8892B0]">
+            <Layers className="w-16 h-16 mb-4 opacity-20" />
+            <h3 className="text-xl font-medium">系统管理后台</h3>
+            <p className="text-sm mt-2">当前子模块: {activeSub}</p>
+          </div>
+        );
+    }
+  };
+
+  return <div className="p-6">{renderContent()}</div>;
 };

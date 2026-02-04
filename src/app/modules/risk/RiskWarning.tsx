@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Bell, Mail, Smartphone, Shield, AlertTriangle } from 'lucide-react';
+import { Bell, Mail, Smartphone, Shield, AlertTriangle } from '@/app/components/SafeIcons';
 
 export const RiskWarning = () => {
   return (

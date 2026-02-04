@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Database, Archive, RefreshCw, CheckCircle, Clock } from 'lucide-react';
+import { Database, Archive, RefreshCw, CheckCircle, Clock } from '@/app/components/SafeIcons';
 
 export const BackupManager = () => {
   return (

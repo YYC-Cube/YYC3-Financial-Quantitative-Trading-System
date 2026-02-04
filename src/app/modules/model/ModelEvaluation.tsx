@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from '@/app/components/SafeIcons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const COMPARE_DATA = [

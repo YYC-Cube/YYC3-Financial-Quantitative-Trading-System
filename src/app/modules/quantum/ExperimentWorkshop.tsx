@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Terminal, Bug, Play, Save } from 'lucide-react';
+import { Terminal, Bug, Play, Save } from '@/app/components/SafeIcons';
 
 export const ExperimentWorkshop = () => {
   return (

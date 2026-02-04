@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GraphicalEditor } from './GraphicalEditor';
 import { CodeEditor } from './CodeEditor';
 import { Card } from '@/app/components/ui/Card';
-import { Layout, Code, PlayCircle, Settings2 } from 'lucide-react';
+import { Layout, Code, PlayCircle, Settings2 } from '@/app/components/SafeIcons';
 
 export const StrategyEditor = () => {
   const [mode, setMode] = useState<'graphical' | 'code'>('graphical');

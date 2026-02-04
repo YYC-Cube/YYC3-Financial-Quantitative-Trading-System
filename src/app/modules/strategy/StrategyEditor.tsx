@@ -4,7 +4,7 @@ import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs';
 import 'prismjs/components/prism-python';
 import 'prismjs/themes/prism-tomorrow.css'; // Dark theme
-import { Play, Save, Download, Plus, Workflow, Code, Database, Zap } from 'lucide-react';
+import { Play, Save, Download, Plus, Workflow, Code, Database, Zap } from '@/app/components/SafeIcons';
 
 const MOCK_CODE = `import numpy as np
 import pandas as pd

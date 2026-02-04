@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Gamepad2, RotateCcw, Save } from 'lucide-react';
+import { Gamepad2, RotateCcw, Save } from '@/app/components/SafeIcons';
 import { RealTrading } from './RealTrading';
 
 export const SimulatedTrading = () => {

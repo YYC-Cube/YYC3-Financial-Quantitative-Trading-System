@@ -5,7 +5,7 @@ import {
   Play, RotateCcw, Download, TrendingUp, TrendingDown, 
   Activity, DollarSign, List, BarChart2, ShieldCheck, 
   Zap, AlertTriangle, CheckCircle2, Globe, Cpu
-} from 'lucide-react';
+} from '@/app/components/SafeIcons';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import {
   Table,

@@ -4,7 +4,7 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-python';
 import 'prismjs/themes/prism-tomorrow.css'; // Dark theme
 import { Card } from '@/app/components/ui/Card';
-import { Save, Play, Download, Upload, Copy, CheckCircle2 } from 'lucide-react';
+import { Save, Play, Download, Upload, Copy, CheckCircle2 } from '@/app/components/SafeIcons';
 
 const INITIAL_CODE = `# Quant Strategy Template - Python
 import numpy as np

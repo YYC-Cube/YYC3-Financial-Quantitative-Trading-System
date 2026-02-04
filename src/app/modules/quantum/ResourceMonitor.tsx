@@ -7,9 +7,9 @@ import {
   FlaskConical, RefreshCw,
   TrendingDown, AlertCircle,
   BrainCircuit, Gauge
-} from 'lucide-react';
+} from '@/app/components/SafeIcons';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { motion } from 'motion/react';
+import { motion } from '@/app/components/SafeMotion';
 import { toast } from 'sonner';
 
 const generateVaRData = () => {

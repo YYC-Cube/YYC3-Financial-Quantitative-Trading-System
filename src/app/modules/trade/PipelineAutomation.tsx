@@ -5,8 +5,8 @@ import {
   Activity, Play, Loader2, 
   ShieldCheck, Globe, Database,
   Cpu, Terminal
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+} from '@/app/components/SafeIcons';
+import { motion, AnimatePresence } from '@/app/components/SafeMotion';
 import { toast } from 'sonner';
 
 const PIPELINE_STEPS = [

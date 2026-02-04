@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { GripVertical, Layers } from 'lucide-react';
+import { GripVertical, Layers } from '@/app/components/SafeIcons';
 import * as ReactGridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';

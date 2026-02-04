@@ -1,17 +1,28 @@
 import React from 'react';
-import { 
-  Search, Bell, User, Activity, Menu 
-} from 'lucide-react';
+// import { 
+//   Search, Bell, User, Activity, Menu 
+// } from '@/app/components/SafeIcons';
+import { useTranslation } from '@/app/i18n/mock';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { MODULES } from '@/app/data/navigation';
+// import { AlertCenter } from './AlertCenter';
 import logoImg from "figma:asset/40025af4b8baa344842bf5c8553025808daf7909.png";
+
+// Inline icons to prevent import issues
+const Search = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>;
+const Bell = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>;
+const User = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>;
+const Activity = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>;
+const Menu = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>;
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export const Navbar = ({ activeModule, setActiveModule }: any) => {
+  const { t } = useTranslation();
+  
   return (
     <nav className="h-16 bg-[#0A192F] border-b border-[#233554] flex items-center px-4 lg:px-6 fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center gap-2 lg:gap-3 mr-4 lg:mr-12 shrink-0 cursor-pointer" onClick={() => setActiveModule('market')}>
@@ -32,8 +43,8 @@ export const Navbar = ({ activeModule, setActiveModule }: any) => {
                 : "text-[#8892B0] hover:text-[#CCD6F6] hover:bg-[#112240]/50"
             )}
           >
-            <m.icon className="w-4 h-4" />
-            <span className="text-sm font-medium">{m.name}</span>
+            {m.icon ? <m.icon className="w-4 h-4" /> : <Activity className="w-4 h-4 text-red-500" />}
+            <span className="text-sm font-medium">{t(`nav.${m.id}`)}</span>
           </button>
         ))}
       </div>
@@ -56,9 +67,9 @@ export const Navbar = ({ activeModule, setActiveModule }: any) => {
           />
         </div>
         
-        <button className="text-[#8892B0] hover:text-white p-2 relative">
-          <Bell className="w-4 h-4 lg:w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#F56565] rounded-full animate-pulse" />
+        {/* <AlertCenter /> */}
+        <button className="relative p-2 text-[#8892B0] hover:text-[#CCD6F6] transition-colors rounded-full hover:bg-[#112240]">
+          <Bell className="w-5 h-5" />
         </button>
         
         <div className="flex items-center gap-2 pl-2 lg:pl-4 border-l border-[#233554]">

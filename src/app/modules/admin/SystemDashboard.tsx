@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Globe, Server, Activity, AlertTriangle, Shield, Cpu, Database } from 'lucide-react';
+import { Globe, Server, Activity, AlertTriangle, Shield, Cpu, Database } from '@/app/components/SafeIcons';
 
 
 // Note: Leaflet requires some CSS and potentially dynamic import in SSR, but here it's client side. 

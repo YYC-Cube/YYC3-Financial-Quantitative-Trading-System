@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Layers, ArrowRight, PlayCircle, StopCircle, RotateCcw } from 'lucide-react';
+import { Layers, ArrowRight, PlayCircle, StopCircle, RotateCcw } from '@/app/components/SafeIcons';
 
 export const DataProcessing = () => {
   return (

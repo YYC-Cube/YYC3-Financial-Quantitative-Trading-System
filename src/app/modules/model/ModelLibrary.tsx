@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Box, Brain, Zap, Star, MoreHorizontal } from 'lucide-react';
+import { Box, Brain, Zap, Star, MoreHorizontal } from '@/app/components/SafeIcons';
 
 const MODELS = [
   { id: 1, name: 'LSTM Price Predictor', type: 'AI', acc: '89.2%', roi: '+12.5%', status: 'Deployed', color: '#4299E1' },

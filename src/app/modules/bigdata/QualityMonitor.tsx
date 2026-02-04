@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { CheckCircle, AlertTriangle, XCircle, FileText } from 'lucide-react';
+import { CheckCircle, AlertTriangle, XCircle, FileText } from '@/app/components/SafeIcons';
 import { RadialBarChart, RadialBar, Legend, ResponsiveContainer, Tooltip } from 'recharts';
 
 const QUALITY_DATA = [

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/app/components/ui/Card';
 import { Tabs } from '@/app/components/ui/Tabs';
-import { TrendingUp, TrendingDown, Star, Activity, MoreHorizontal } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { TrendingUp, TrendingDown, Star, Activity } from '@/app/components/SafeIcons';
+import { motion, AnimatePresence } from '@/app/components/SafeMotion';
 
 const MARKETS = [
   { id: 'stock', label: '股票 (Stock)' },
@@ -126,9 +126,6 @@ export const GlobalQuotes = ({ onNavigate }: { onNavigate: (page: string) => voi
                       <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button className="p-1 hover:bg-[#233554] rounded text-[#4299E1]">
                           <Activity className="w-4 h-4" />
-                        </button>
-                        <button className="p-1 hover:bg-[#233554] rounded text-[#8892B0]">
-                          <MoreHorizontal className="w-4 h-4" />
                         </button>
                       </div>
                     </td>

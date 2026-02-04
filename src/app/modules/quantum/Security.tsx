@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Lock, Key, RefreshCw, ShieldCheck } from 'lucide-react';
+import { Lock, Key, RefreshCw, ShieldCheck } from '@/app/components/SafeIcons';
 
 export const Security = () => {
   return (

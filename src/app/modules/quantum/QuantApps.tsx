@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { TrendingUp, Shield, Zap, Search } from 'lucide-react';
+import { TrendingUp, Shield, Zap, Search } from '@/app/components/SafeIcons';
 
 const APPS = [
   { id: 'opt', title: '投资组合优化', icon: Zap, desc: '使用 QAOA 寻找最佳夏普比率组合', color: '#ECC94B' },

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Zap, RefreshCw, Shield, Power, ChevronRight, ChevronLeft } from 'lucide-react';
-import { motion } from 'motion/react';
+import { Zap, RefreshCw, Shield, Power, ChevronRight, ChevronLeft } from '@/app/components/SafeIcons';
+import { motion } from '@/app/components/SafeMotion';
 import clsx from 'clsx';
 import { toast } from 'sonner';
 

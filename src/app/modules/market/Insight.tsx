@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceDot } from 'recharts';
-import { AlertTriangle, TrendingUp, Zap } from 'lucide-react';
+import { AlertTriangle, TrendingUp, Zap } from '@/app/components/SafeIcons';
 
 const INSIGHT_DATA = Array.from({ length: 30 }, (_, i) => {
   const val = 100 + i * 2 + Math.random() * 20;

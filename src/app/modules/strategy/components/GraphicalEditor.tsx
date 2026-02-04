@@ -17,9 +17,9 @@ import { Card } from '@/app/components/ui/Card';
 import { 
   MousePointer2, Move, Box, Database, Activity, 
   Zap, ShieldAlert, ArrowRight, Layers, Menu, X 
-} from 'lucide-react';
+} from '@/app/components/SafeIcons';
 import { useIsMobile } from '@/app/components/ui/use-mobile';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from '@/app/components/SafeMotion';
 
 const initialNodes: Node[] = [
   {

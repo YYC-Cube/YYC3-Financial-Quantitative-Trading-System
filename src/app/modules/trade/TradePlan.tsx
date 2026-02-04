@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Calendar, Clock, ArrowRight, Trash2, Edit } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, Trash2, Edit } from '@/app/components/SafeIcons';
 
 export const TradePlan = () => {
   return (

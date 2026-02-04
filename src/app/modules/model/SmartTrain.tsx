@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Zap, Play, Pause, RotateCcw } from 'lucide-react';
+import { Zap, Play, Pause, RotateCcw } from '@/app/components/SafeIcons';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 const TRAIN_DATA = Array.from({ length: 50 }, (_, i) => ({

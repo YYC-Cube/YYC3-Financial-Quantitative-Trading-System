@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { FileText, AlertTriangle, Cpu, Search, Trash2, Download } from 'lucide-react';
+import { FileText, AlertTriangle, Cpu, Search, Trash2, Download } from '@/app/components/SafeIcons';
 
 const LOGS = [
   { id: 1024, time: '2024-01-29 10:25:00', level: 'INFO', module: 'Auth', msg: 'User Alex login successful from 192.168.1.5', duration: '45ms' },

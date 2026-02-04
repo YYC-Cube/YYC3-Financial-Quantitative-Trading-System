@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { TrendingUp, Activity, BarChart2 } from 'lucide-react';
+import { TrendingUp, Activity, BarChart2 } from '@/app/components/SafeIcons';
 
 const APPS = [
   { id: 1, title: '对接实盘策略', icon: Activity, desc: '将训练好的模型信号直接输出到交易引擎', status: 'Running', metric: 'Signal: Strong Buy' },

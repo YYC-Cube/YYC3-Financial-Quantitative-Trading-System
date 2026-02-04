@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Search, Bell, Settings, User, ChevronRight } from 'lucide-react';
+import { Search, Bell, Settings, User, ChevronRight } from '@/app/components/SafeIcons';
 import clsx from 'clsx';
 
 export default function Topbar() {

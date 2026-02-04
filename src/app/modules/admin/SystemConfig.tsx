@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Save, RotateCcw } from 'lucide-react';
+import { Save, RotateCcw } from '@/app/components/SafeIcons';
 
 export const SystemConfig = () => {
   return (

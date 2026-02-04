@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Search, Filter, Download, Calendar } from 'lucide-react';
+import { Search, Filter, Download, Calendar } from '@/app/components/SafeIcons';
 import { KLineChart } from '@/app/components/KLineChart';
 
 const MOCK_HISTORY = Array.from({ length: 50 }, (_, i) => ({

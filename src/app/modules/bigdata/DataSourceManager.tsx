@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '@/app/components/ui/Card';
-import { Database, Wifi, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
+import { Database, Wifi, AlertCircle, CheckCircle, RefreshCw } from '@/app/components/SafeIcons';
 
 const DATA_SOURCES = [
   { id: 1, name: 'Binance API', type: 'WebSocket', freq: '实时', status: 'Online', latency: '45ms' },
