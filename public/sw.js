@@ -1,83 +1,94 @@
 // Service Worker for YanYu Cloud Quant Analysis Trading System (YYC-QATS)
-// Purpose: Offline caching, Market data sync, Web Push Notifications, and Risk Monitoring Stress Test
+// PWA v2.0 — Stable Production Build
+// Purpose: Offline caching, Market data sync, Web Push Notifications, Risk Monitoring
 
-const CACHE_NAME = 'yanyu-cloud-cache-v1.1';
-const ASSETS_TO_CACHE = [
+const CACHE_NAME = 'yanyu-cloud-cache-v2.0';
+const STATIC_ASSETS = [
   '/',
   '/index.html',
 ];
 
-// Stress Test Parameters
-const STRESS_TEST_MODE = true; 
-const RISK_THRESHOLD_STRESS = 0.05; // 5% fluctuation trigger
-
+// Install: Pre-cache essential assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[YYC-SW] Initializing Cache...');
-      return cache.addAll(ASSETS_TO_CACHE);
+      console.log('[YYC-SW v2] Pre-caching static assets...');
+      return cache.addAll(STATIC_ASSETS).catch(err => {
+        console.log('[YYC-SW v2] Pre-cache partial failure (expected in dev):', err);
+      });
     })
   );
+  // Activate immediately without waiting
+  self.skipWaiting();
 });
 
+// Activate: Clean old caches, claim all clients
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
-            console.log('[YYC-SW] Clearing old cache:', cacheName);
+            console.log('[YYC-SW v2] Removing old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
+    }).then(() => {
+      console.log('[YYC-SW v2] Activated and claiming clients');
+      return self.clients.claim();
     })
   );
 });
 
-// Mock Risk Monitor Stress Test Logic
-// In real scenario, this would listen to periodic syncs or push streams
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'START_RISK_STRESS_TEST') {
-    console.log('[YYC-SW] Starting Risk Warning Stress Test...');
-    simulateRiskCycle();
+// Fetch: Intelligent caching strategy
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // Skip non-GET requests
+  if (request.method !== 'GET') return;
+
+  // Skip chrome-extension and other non-http(s) schemes
+  if (!url.protocol.startsWith('http')) return;
+
+  // API/market data: Network-First with cache fallback
+  if (url.pathname.includes('/api/') || url.pathname.includes('market') || url.pathname.includes('quotes')) {
+    event.respondWith(
+      fetch(request).then((response) => {
+        if (response && response.status === 200) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            try { cache.put(request, copy); } catch (e) { /* ignore */ }
+          });
+        }
+        return response;
+      }).catch(() => caches.match(request))
+    );
+    return;
   }
+
+  // Static assets: Stale-While-Revalidate
+  event.respondWith(
+    caches.match(request).then((cachedResponse) => {
+      const fetchPromise = fetch(request).then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+          const copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            try { cache.put(request, copy); } catch (e) { /* ignore */ }
+          });
+        }
+        return networkResponse;
+      }).catch(() => null);
+
+      return cachedResponse || fetchPromise;
+    })
+  );
 });
 
-function simulateRiskCycle() {
-  setTimeout(() => {
-    const mockVolatility = Math.random() * 0.1;
-    if (mockVolatility > RISK_THRESHOLD_STRESS) {
-      showRiskNotification('言语云离线风控预警', `检测到极端波动 (${(mockVolatility * 100).toFixed(2)}%)，SW压力测试触发自动熔断。`);
-    }
-    if (STRESS_TEST_MODE) simulateRiskCycle();
-  }, 30000); // Check every 30s for stress test
-}
-
-function showRiskNotification(title, body) {
-  const options = {
-    body,
-    icon: '/logo192.png', // Fallback to generic icon if specific not found
-    badge: '/favicon.ico',
-    vibrate: [500, 110, 500, 110, 450, 110, 200, 110, 170, 40, 450, 110, 200, 110, 170, 40], // SOS pattern
-    data: {
-      timestamp: Date.now(),
-      type: 'RISK_MELTDOWN'
-    },
-    actions: [
-      { action: 'emergency_stop', title: '一键紧急撤单' },
-      { action: 'view_details', title: '查看风控报告' }
-    ],
-    tag: 'risk-warning-stress-test',
-    renotify: true
-  };
-
-  self.registration.showNotification(title, options);
-}
-
-// Handle push notifications
+// Push Notifications
 self.addEventListener('push', (event) => {
-  let data = { title: '言语云系统预警', body: '数据同步异常，请检查网络连接。' };
+  let data = { title: '言语云系统预警', body: '数据同步异常，请检查网络连接。', severity: 'warning' };
   if (event.data) {
     try {
       data = event.data.json();
@@ -86,52 +97,74 @@ self.addEventListener('push', (event) => {
     }
   }
 
-  event.waitUntil(showRiskNotification(data.title, data.body));
+  const options = {
+    body: data.body,
+    icon: '/logo192.png',
+    badge: '/favicon.ico',
+    vibrate: data.severity === 'critical'
+      ? [200, 100, 200, 100, 300]  // SOS pattern for critical
+      : [150, 50, 150],             // Double tap for warning
+    data: {
+      timestamp: Date.now(),
+      severity: data.severity || 'warning',
+      url: data.url || '/',
+    },
+    actions: [
+      { action: 'view', title: '查看详情' },
+      { action: 'dismiss', title: '忽略' },
+    ],
+    tag: `yyc-alert-${Date.now()}`,
+    requireInteraction: data.severity === 'critical',
+  };
+
+  event.waitUntil(self.registration.showNotification(data.title, options));
 });
 
-// Handle notification actions
+// Notification click handler
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  
-  if (event.action === 'emergency_stop') {
-    // In real scenario, send message to client to execute emergency stop
-    event.waitUntil(
-      self.clients.matchAll().then(clients => {
-        clients.forEach(client => client.postMessage({ type: 'EMERGENCY_STOP_EXECUTED' }));
-      })
-    );
-  } else {
-    event.waitUntil(self.clients.openWindow('/'));
+
+  if (event.action === 'dismiss') return;
+
+  const targetUrl = event.notification.data?.url || '/';
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
+      // Focus existing window if available
+      for (const client of clients) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
+          client.focus();
+          client.postMessage({
+            type: 'NOTIFICATION_CLICK',
+            severity: event.notification.data?.severity,
+            url: targetUrl,
+          });
+          return;
+        }
+      }
+      // Open new window
+      return self.clients.openWindow(targetUrl);
+    })
+  );
+});
+
+// Message handler from main thread
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+
+  // Handle alert push from main thread
+  if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
+    const { title, body, severity } = event.data;
+    self.registration.showNotification(title || '言语云预警', {
+      body: body || '',
+      icon: '/logo192.png',
+      vibrate: severity === 'critical' ? [200, 100, 200, 100, 300] : [150, 50, 150],
+      tag: `yyc-alert-${Date.now()}`,
+      requireInteraction: severity === 'critical',
+    });
   }
 });
 
-// Intelligent fetch strategy with offline market support
-self.addEventListener('fetch', (event) => {
-  // Market data should be Network-First with Cache Fallback for offline viewing
-  if (event.request.url.includes('market') || event.request.url.includes('api/quotes')) {
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (response && response.status === 200) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-          }
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-  } else {
-    // Assets are Stale-While-Revalidate
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, networkResponse.clone()));
-          }
-          return networkResponse;
-        });
-        return cachedResponse || fetchPromise;
-      })
-    );
-  }
-});
+console.log('[YYC-SW v2] Service Worker loaded');

@@ -3,7 +3,11 @@
 
 let currentLanguage = 'zh';
 
-const translations: any = {
+interface TranslationMap {
+  [key: string]: string | TranslationMap;
+}
+
+const translations: Record<string, TranslationMap> = {
   en: {
     nav: {
       market: "Market",
@@ -80,7 +84,7 @@ const translations: any = {
 
 function translate(key: string): string {
   const keys = key.split('.');
-  let value: any = translations[currentLanguage];
+  let value: string | TranslationMap | undefined = translations[currentLanguage];
   
   for (const k of keys) {
     if (value && typeof value === 'object' && k in value) {

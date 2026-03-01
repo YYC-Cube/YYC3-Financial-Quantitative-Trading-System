@@ -1,24 +1,46 @@
 import React from 'react';
 
+/** Props stripped from motion wrappers (animation-related, not forwarded to DOM) */
+interface MotionStripProps {
+  animate?: unknown;
+  initial?: unknown;
+  exit?: unknown;
+  transition?: unknown;
+  layoutId?: string;
+  whileHover?: unknown;
+  whileTap?: unknown;
+}
+
+/** Generic factory: strips motion-specific props and passes rest to the HTML element */
+type MotionComponent<T extends keyof React.JSX.IntrinsicElements> =
+  (props: MotionStripProps & React.JSX.IntrinsicElements[T]) => React.JSX.Element;
+
+function makeMotion<T extends keyof React.JSX.IntrinsicElements>(Tag: T): MotionComponent<T> {
+  return ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return React.createElement(Tag, props as any);
+  };
+}
+
 // Mock motion to avoid fginspector ForwardRef errors
 export const motion = {
-  div: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <div {...props} />,
-  button: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <button {...props} />,
-  span: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <span {...props} />,
-  li: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <li {...props} />,
-  ul: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <ul {...props} />,
-  a: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <a {...props} />,
-  p: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <p {...props} />,
-  h1: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <h1 {...props} />,
-  h2: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <h2 {...props} />,
-  h3: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <h3 {...props} />,
-  section: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <section {...props} />,
-  tr: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <tr {...props} />,
-  td: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <td {...props} />,
-  th: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <th {...props} />,
-  tbody: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <tbody {...props} />,
-  thead: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <thead {...props} />,
-  table: ({ animate, initial, exit, transition, layoutId, whileHover, whileTap, ...props }: any) => <table {...props} />,
+  div: makeMotion('div'),
+  button: makeMotion('button'),
+  span: makeMotion('span'),
+  li: makeMotion('li'),
+  ul: makeMotion('ul'),
+  a: makeMotion('a'),
+  p: makeMotion('p'),
+  h1: makeMotion('h1'),
+  h2: makeMotion('h2'),
+  h3: makeMotion('h3'),
+  section: makeMotion('section'),
+  tr: makeMotion('tr'),
+  td: makeMotion('td'),
+  th: makeMotion('th'),
+  tbody: makeMotion('tbody'),
+  thead: makeMotion('thead'),
+  table: makeMotion('table'),
 };
 
-export const AnimatePresence = ({ children }: any) => <>{children}</>;
+export const AnimatePresence = ({ children }: { children?: React.ReactNode }) => <div className="contents">{children}</div>;

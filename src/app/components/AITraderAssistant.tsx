@@ -14,7 +14,7 @@ interface Message {
 interface AITraderAssistantProps {
   visible: boolean;
   onClose: () => void;
-  contextData?: any; // Context from the trading system (prices, positions)
+  contextData?: Record<string, unknown>; // Context from the trading system (prices, positions)
 }
 
 export const AITraderAssistant = ({ visible, onClose, contextData }: AITraderAssistantProps) => {
@@ -73,13 +73,14 @@ export const AITraderAssistant = ({ visible, onClose, contextData }: AITraderAss
     setIsTyping(false);
   };
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = (overrideText?: string) => {
+    const text = overrideText || input;
+    if (!text.trim()) return;
     
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: input,
+      content: text,
       timestamp: Date.now()
     };
     
@@ -131,7 +132,7 @@ export const AITraderAssistant = ({ visible, onClose, contextData }: AITraderAss
 
            {/* Body */}
            {!minimized && (
-             <>
+             <div className="contents">
                <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-gradient-to-b from-[#0A192F] to-[#071425]" ref={scrollRef}>
                   {messages.map((msg) => (
                     <motion.div 
@@ -211,7 +212,7 @@ export const AITraderAssistant = ({ visible, onClose, contextData }: AITraderAss
                         </button>
                      </div>
                      <button 
-                       onClick={handleSend}
+                       onClick={() => handleSend()}
                        disabled={!input.trim() || isTyping}
                        className={`p-2 rounded-lg transition-all ${input.trim() ? 'bg-[#38B2AC] text-white' : 'bg-[#233554] text-[#8892B0]'}`}
                      >
@@ -222,7 +223,7 @@ export const AITraderAssistant = ({ visible, onClose, contextData }: AITraderAss
                      {['BTC 阻力位', '对冲策略', '大单监控', '市场情绪'].map((tag) => (
                         <button 
                            key={tag}
-                           onClick={() => { setInput(tag); handleSend(); }}
+                           onClick={() => { setInput(tag); handleSend(tag); }}
                            className="whitespace-nowrap px-2 py-1 bg-[#233554]/50 hover:bg-[#233554] border border-[#233554] rounded text-[10px] text-[#8892B0] hover:text-[#38B2AC] transition-colors"
                         >
                            {tag}
@@ -230,7 +231,7 @@ export const AITraderAssistant = ({ visible, onClose, contextData }: AITraderAss
                      ))}
                   </div>
                </div>
-             </>
+             </div>
            )}
         </Card>
       </motion.div>

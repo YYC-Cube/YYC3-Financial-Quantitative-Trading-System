@@ -1,17 +1,43 @@
 import React from 'react';
 
-// Define icons inline to ensure they are valid React components and avoid circular dependency or import issues
-const TrendingUp = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>;
-const ShieldAlert = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01" /></svg>;
-const Cpu = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>;
-const Zap = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>;
-const Settings = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
-const Layers = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>;
-const Database = (props: any) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>;
-const Atom = (props: any) => (
+type IconProps = React.SVGProps<SVGSVGElement>;
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  sub?: string[];
+}
+
+// Define icons inline — each icon must clearly represent its module
+const TrendingUp = (props: IconProps) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>;
+const ShieldAlert = (props: IconProps) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01" /></svg>;
+const Cpu = (props: IconProps) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>;
+const Zap = (props: IconProps) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>;
+const Settings = (props: IconProps) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
+const Database = (props: IconProps) => <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" /></svg>;
+
+// Atom icon for Quantum Computing
+const Atom = (props: IconProps) => (
   <svg className={props.className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 0v20M2 12h20" />
-    <circle cx="12" cy="12" r="3" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} />
+    <circle cx="12" cy="12" r="2" strokeWidth={2} />
+    <ellipse cx="12" cy="12" rx="10" ry="4" strokeWidth={1.5} />
+    <ellipse cx="12" cy="12" rx="10" ry="4" strokeWidth={1.5} transform="rotate(60 12 12)" />
+    <ellipse cx="12" cy="12" rx="10" ry="4" strokeWidth={1.5} transform="rotate(120 12 12)" />
+  </svg>
+);
+
+// Brain/Neural-network icon for Model Workshop (量化工坊)
+const BrainCircuit = (props: IconProps) => (
+  <svg className={props.className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 4.5a2.5 2.5 0 00-4.96-.46 2.5 2.5 0 00-1.98 3 2.5 2.5 0 00-1.32 4.24 2.5 2.5 0 00.34 5.58 2.5 2.5 0 002.96 3.08 2.5 2.5 0 004.91.05L12 20V4.5z" />
+    <path d="M16 8V5c0-1.1.9-2 2-2" />
+    <path d="M12 13h4" />
+    <path d="M12 18h6a2 2 0 001-3.75" />
+    <path d="M12 8h8" />
+    <path d="M20.5 8.5a2.5 2.5 0 00-5 0v.006" />
+    <circle cx="16" cy="13" r="0.5" fill="currentColor" />
+    <circle cx="18" cy="8" r="0.5" fill="currentColor" />
+    <circle cx="20" cy="18" r="0.5" fill="currentColor" />
   </svg>
 );
 
@@ -21,12 +47,12 @@ export const MODULES = [
   { id: 'risk', name: '风险管控', icon: ShieldAlert },
   { id: 'quantum', name: '量子计算', icon: Atom },
   { id: 'bigdata', name: '数据管理', icon: Database },
-  { id: 'model', name: '量化工坊', icon: Layers },
+  { id: 'model', name: '量化工坊', icon: BrainCircuit },
   { id: 'trade', name: '交易中心', icon: Zap },
   { id: 'admin', name: '管理后台', icon: Settings },
 ];
 
-export const MENUS: Record<string, any[]> = {
+export const MENUS: Record<string, MenuItem[]> = {
   market: [
     { id: 'live', name: '实时行情', sub: ['全球行情', '自选面板', 'K线分析', '行情联动'] },
     { id: 'history', name: '历史数据', sub: ['多维筛选', '双模展示', '指标对比', '批量导出'] },
@@ -77,13 +103,16 @@ export const MENUS: Record<string, any[]> = {
     { id: 'real', name: '实盘交易', sub: ['资产监控', '手动交易', '自动交易', '委托记录', '资产穿透'] },
     { id: 'sim', name: '模拟交易', sub: ['账户配置', '交易监控', '记录分析', '实盘切换'] },
     { id: 'plan', name: '交易计划', sub: ['计划设置', '条件挂单', '挂单管理', '执行监控'] },
-    { id: 'logs', name: '日志统计', sub: ['作日志', '交易统计', '报告生成', '记录备份'] },
+    { id: 'logs', name: '日志统计', sub: ['操作日志', '交易统计', '报告生成', '记录备份'] },
     { id: 'config', name: '交易配置', sub: ['接口配置', '参数设置', '风控设置', '异常处理'] },
   ],
   admin: [
     { id: 'sys', name: '系统配置', sub: ['基础配置', '数据配置', '通知配置', '量子配置'] },
     { id: 'auth', name: '权限管理', sub: ['用户管理', '角色管理', '权限分配', '团队管理'] },
     { id: 'monitor', name: '日志监控', sub: ['操作日志', '错误日志', '性能日志', '日志管理'] },
+    { id: 'plan', name: '项目规划', sub: ['里程碑', '模型配置', 'API对接', '发布计划'] },
+    { id: 'analytics', name: '使用分析', sub: ['模块热力图', '转化路径', '会话统计', '数据导出'] },
+    { id: 'docs', name: '项目文档', sub: ['系统概述', '模块清单', '技术栈', '文件地图', '开发规划'] },
     { id: 'backup', name: '数据备份', sub: ['全局备份', '数据恢复', '数据清理', '幂等审核'] },
     { id: 'plugin', name: '模块插件', sub: ['模块管理', '插件管理', '接口管理', '系统更新'] },
     { id: 'screen', name: '大屏监控', sub: ['全局监控', '实时监控', '预警大屏', '多屏联动'] },
