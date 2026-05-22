@@ -1,23 +1,3 @@
----
-file: README.md
-description: YYC3-QATS 项目总览文档 — 面向专业量化交易者的全功能 Web 应用
-author: YanYuCloudCube™ Team <admin@0379.email>
-version: v1.0.0
-created: 2026-05-22
-updated: 2026-05-22
-status: production
-tags: [quantitative-trading,react,typescript,pwa,ai,web3]
-category: project
-language: zh-CN
-audience: developers,stakeholders,traders
-complexity: advanced
-project: yyc3-qats
-phase: production
-homepage: https://trading.yyc3.vip
-repository: https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System
-license: MIT
----
-
 <p align="center">
   <img src="public/Financial-Quantitative.png" alt="YYC³ — AI-driven Quantitative Trading System" width="100%" />
 </p>
