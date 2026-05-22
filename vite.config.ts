@@ -27,13 +27,25 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     chunkSizeWarningLimit: 600,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug'],
+      },
+      format: {
+        comments: false,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
           'vendor-mui': ['@mui/material', '@mui/icons-material'],
-          'vendor-chart': ['recharts'],
+          'vendor-chart': ['recharts', 'lightweight-charts'],
           'vendor-three': ['three'],
+          'vendor-utils': ['date-fns', 'lodash-es'],
         },
       },
     },
