@@ -157,9 +157,7 @@ interface ExchangeAdapter {
 // ── Binance Adapter (Real structure, simulated data in sandbox) ──
 class BinanceAdapter implements ExchangeAdapter {
   name = 'Binance';
-  // @ts-expect-error reserved for real API integration
   private baseUrl = 'https://api.binance.com';
-  // @ts-expect-error reserved for real API integration
   private wsUrl = 'wss://stream.binance.com:9443';
   private apiKey: string;
   private latencyMs = 0;
@@ -231,9 +229,7 @@ class BinanceAdapter implements ExchangeAdapter {
 // ── OKX Adapter (Real endpoint structure) ──
 class OKXAdapter implements ExchangeAdapter {
   name = 'OKX';
-  // @ts-expect-error reserved for real API integration
   private baseUrl = 'https://www.okx.com';
-  // @ts-expect-error reserved for real API integration
   private wsUrl = 'wss://ws.okx.com:8443/ws/v5';
   private apiKey: string;
   private passphrase: string;
@@ -302,9 +298,7 @@ class OKXAdapter implements ExchangeAdapter {
 // ── Bybit Adapter (Real endpoint structure) ──
 class BybitAdapter implements ExchangeAdapter {
   name = 'Bybit';
-  // @ts-expect-error reserved for real API integration
   private baseUrl = 'https://api.bybit.com';
-  // @ts-expect-error reserved for real API integration
   private wsUrl = 'wss://stream.bybit.com/v5';
   private apiKey: string;
   private latencyMs = 0;

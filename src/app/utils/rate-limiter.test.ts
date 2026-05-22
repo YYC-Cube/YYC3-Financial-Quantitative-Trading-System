@@ -3,7 +3,8 @@
  * @description Unit tests for Rate Limiter utility
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { RateLimiter, apiRateLimiter, wsRateLimiter } from './rate-limiter';
 
 describe('RateLimiter', () => {
@@ -48,17 +49,24 @@ describe('RateLimiter', () => {
   });
 
   it('should reset after window expires', async () => {
-    limiter.check('user-1');
-    limiter.check('user-1');
-    limiter.check('user-1');
+    vi.useFakeTimers();
 
-    const blocked = limiter.check('user-1');
-    expect(blocked.allowed).toBe(false);
+    try {
+      limiter.check('user-1');
+      limiter.check('user-1');
+      limiter.check('user-1');
 
-    await new Promise(resolve => setTimeout(resolve, 1100));
+      const blocked = limiter.check('user-1');
+      expect(blocked.allowed).toBe(false);
 
-    const allowed = limiter.check('user-1');
-    expect(allowed.allowed).toBe(true);
+      // Advance time by window duration (fake timers - instant)
+      vi.advanceTimersByTime(1100);
+
+      const allowed = limiter.check('user-1');
+      expect(allowed.allowed).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('should handle multiple keys independently', () => {

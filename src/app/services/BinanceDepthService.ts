@@ -160,7 +160,6 @@ class ExchangeDepthConnection {
 
   // Health metrics
   private messageCount = 0;
-  // @ts-expect-error reserved for health metrics
   private connectionStartTime = 0;
 
   constructor(config: ExchangeDepthConfig) {

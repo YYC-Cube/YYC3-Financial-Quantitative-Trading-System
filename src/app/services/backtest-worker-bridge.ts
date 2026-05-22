@@ -40,18 +40,14 @@ import { getKLineService } from './BinanceKLineService';
 // ── Worker Pool ──
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// @ts-expect-error reserved for worker pool implementation
 let workerInstance: Worker | null = null;
 let workerSupported: boolean | null = null;
-// @ts-expect-error reserved for worker pool implementation
 let pendingRequests = new Map<string, {
   resolve: (v: WorkerBacktestResult) => void;
   reject: (e: Error) => void;
 }>();
-// @ts-expect-error reserved for worker pool implementation
 let requestId = 0;
 
-// @ts-expect-error reserved for worker pool implementation
 function createWorkerBlob(): Worker | null {
   try {
     // The worker script executes computeBacktest from the inlined logic
