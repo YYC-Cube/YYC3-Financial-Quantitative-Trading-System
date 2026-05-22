@@ -51,6 +51,7 @@ export interface CircuitBreakerOptions {
 }
 
 export interface CircuitBreakerMetrics {
+  name: string;
   serviceName: string;
   state: CircuitState;
   consecutiveFailures: number;
@@ -109,6 +110,7 @@ export class CircuitBreaker {
       : 0;
 
     return {
+      name: this.serviceName,
       serviceName: this.serviceName,
       state: this.state,
       consecutiveFailures: this.consecutiveFailures,

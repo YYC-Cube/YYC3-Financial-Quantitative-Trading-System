@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * @file src/app/utils/tests.ts
  * @description YYC3 核心功能测试套件，覆盖8大业务模块、基础设施、API 集成和多阶段桥接测试
@@ -3490,6 +3492,7 @@ const phase8Tests: TestCase[] = [
       const result: CanaryResult = {
         service: 'system', method: 'getSystemMetrics',
         status: 'mock', latency: 42.5, details: 'test',
+        passed: false
       };
       assert(result.service === 'system', 'service');
       assert(['real', 'mock', 'error', 'timeout'].includes(result.status), 'valid status');
@@ -4558,7 +4561,10 @@ const phase10Tests: TestCase[] = [
     run: () => {
       const start = performance.now();
       const before = perfMonitor.getSnapshot().totalRequests;
-      perfMonitor.recordRequest({ service: 'test', method: 'ping', source: 'mock', latency: 10, success: true });
+      perfMonitor.recordRequest({
+        service: 'test', method: 'ping', source: 'mock', latency: 10, success: true,
+        endpoint: ''
+      });
       const after = perfMonitor.getSnapshot().totalRequests;
       assert(after === before + 1, `Expected ${before + 1}, got ${after}`);
       return { id: 'TC-P10-011', passed: true, duration: performance.now() - start, details: 'Record accumulation OK' };
@@ -4572,7 +4578,10 @@ const phase10Tests: TestCase[] = [
     automatable: true,
     run: () => {
       const start = performance.now();
-      perfMonitor.recordRequest({ service: 'logtest', method: 'a', source: 'real', latency: 5, success: true });
+      perfMonitor.recordRequest({
+        service: 'logtest', method: 'a', source: 'real', latency: 5, success: true,
+        endpoint: ''
+      });
       const log = perfMonitor.getRequestLog(5);
       assert(Array.isArray(log), 'Should be array');
       assert(log.length >= 1, 'Should have entries');
@@ -4607,8 +4616,14 @@ const phase10Tests: TestCase[] = [
     automatable: true,
     run: () => {
       const start = performance.now();
-      perfMonitor.recordRequest({ service: 'svc_a', method: 'm1', source: 'real', latency: 10, success: true });
-      perfMonitor.recordRequest({ service: 'svc_a', method: 'm2', source: 'mock', latency: 20, success: false, error: 'test' });
+      perfMonitor.recordRequest({
+        service: 'svc_a', method: 'm1', source: 'real', latency: 10, success: true,
+        endpoint: ''
+      });
+      perfMonitor.recordRequest({
+        service: 'svc_a', method: 'm2', source: 'mock', latency: 20, success: false, error: 'test',
+        endpoint: ''
+      });
       const snap = perfMonitor.getSnapshot();
       const svcA = snap.serviceLatencies['svc_a'];
       assert(svcA !== undefined, 'svc_a should exist');
@@ -4627,7 +4642,10 @@ const phase10Tests: TestCase[] = [
     run: () => {
       const start = performance.now();
       for (let i = 0; i < 20; i++) {
-        perfMonitor.recordRequest({ service: 'p_test', method: 'x', source: 'mock', latency: Math.random() * 100, success: true });
+        perfMonitor.recordRequest({
+          service: 'p_test', method: 'x', source: 'mock', latency: Math.random() * 100, success: true,
+          endpoint: ''
+        });
       }
       const snap = perfMonitor.getSnapshot();
       assert(snap.p95Latency >= 0, 'P95 should be >= 0');

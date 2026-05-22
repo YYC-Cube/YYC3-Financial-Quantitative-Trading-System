@@ -28,8 +28,21 @@
  *   - No forwardRef, no radix-ui
  */
 
-import * as d3 from 'd3';
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+
+import { area, curveMonotoneX, line, max, pointer, scaleLinear, select, zoom, zoomIdentity } from 'd3';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+const d3 = {
+  select,
+  pointer,
+  scaleLinear,
+  max,
+  line,
+  area,
+  zoom,
+  zoomIdentity,
+  curveMonotoneX,
+} as const;
 
 import { useSettings } from '@/app/contexts/SettingsContext';
 
@@ -384,7 +397,7 @@ export const D3CandlestickChart: React.FC<D3CandlestickChartProps> = ({
         .attr('width', chartW).attr('height', priceH + volumeH)
         .attr('fill', 'transparent').style('cursor', 'crosshair');
 
-      overlay_rect.on('mousemove', function(event: MouseEvent) {
+      overlay_rect.on('mousemove', function (event: MouseEvent) {
         const [mx, my] = d3.pointer(event);
         crosshairG.style('display', null);
 

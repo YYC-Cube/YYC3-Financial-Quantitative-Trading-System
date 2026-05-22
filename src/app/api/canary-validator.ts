@@ -39,6 +39,8 @@ export interface CanaryResult {
   service: string;
   method: string;
   status: 'real' | 'mock' | 'error' | 'timeout';
+  passed: boolean;
+  degraded?: boolean;
   latency: number;
   details?: string;
 }
@@ -89,6 +91,7 @@ async function probeService(
       service: serviceName,
       method,
       status: isReal ? 'real' : 'mock',
+      passed: isReal,
       latency: +latency.toFixed(1),
       details: `code=${result?.code}, requestId=${requestId.slice(0, 20)}`,
     };
@@ -99,6 +102,7 @@ async function probeService(
       service: serviceName,
       method,
       status: msg === 'CANARY_TIMEOUT' ? 'timeout' : 'error',
+      passed: false,
       latency: +latency.toFixed(1),
       details: msg,
     };

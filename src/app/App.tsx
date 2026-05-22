@@ -44,6 +44,7 @@ import { SettingsDialog } from '@/app/components/layout/SettingsDialog';
 import { Sidebar } from '@/app/components/layout/Sidebar';
 import { initNotificationBridge, NotificationBadge, NotificationCenter } from '@/app/components/NotificationCenter';
 import { OfflineIndicator } from '@/app/components/OfflineIndicator';
+import { PWAInstallBanner } from '@/app/components/PWAInstallBanner';
 import { useIsMobile } from '@/app/components/ui/use-mobile';
 import { AlertProvider } from '@/app/contexts/AlertContext';
 import { GlobalDataProvider, useGlobalData } from '@/app/contexts/GlobalDataContext';
@@ -452,6 +453,9 @@ function AppContent() {
         }}
         richColors
       />
+
+      {/* PWA Install Banner - Show on first visit */}
+      <PWAInstallBanner position="bottom" showAfterDays={7} />
     </div>
   );
 }

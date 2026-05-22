@@ -41,11 +41,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor-react': ['react', 'react-dom'],
-          'vendor-mui': ['@mui/material', '@mui/icons-material'],
-          'vendor-chart': ['recharts', 'lightweight-charts'],
-          'vendor-three': ['three'],
-          'vendor-utils': ['date-fns'],
+          'vendor-mui': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          'vendor-chart-core': ['recharts'],
+          'vendor-chart-trading': ['lightweight-charts', 'd3'],
+          'vendor-visualization': ['three', 'reactflow'],
         },
       },
     },

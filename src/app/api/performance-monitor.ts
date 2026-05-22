@@ -35,6 +35,7 @@
 export interface RequestLogEntry {
   id: string;
   timestamp: number;
+  endpoint: string;
   service: string;
   method: string;
   source: 'real' | 'mock' | 'circuit-open';

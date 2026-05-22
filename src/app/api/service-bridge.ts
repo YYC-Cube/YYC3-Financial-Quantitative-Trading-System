@@ -135,6 +135,7 @@ function logBridge(service: string, method: string, source: 'real' | 'mock' | 'c
     source: source === 'circuit-open' ? 'circuit-open' : source,
     latency: latencyMs,
     success: true,
+    endpoint: ''
   });
 }
 

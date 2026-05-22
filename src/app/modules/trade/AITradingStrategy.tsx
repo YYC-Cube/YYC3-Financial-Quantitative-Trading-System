@@ -45,8 +45,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Area,
   Bar,
-  CartesianGrid,
   ComposedChart,
+  CartesianGrid,
   Line,
   LineChart,
   ReferenceLine,

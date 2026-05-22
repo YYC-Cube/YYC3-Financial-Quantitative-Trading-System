@@ -64,6 +64,61 @@
     <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Phase 2: Critical Resource Hints for Core Web Vitals Optimization -->
+    <!-- LCP Optimization: Preload critical above-the-fold resources -->
+    <link rel="preload" href="/yyc3.png" as="image" type="image/png" />
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" />
+
+    <!-- DNS Prefetch for API endpoints (reduces connection time) -->
+    <link rel="dns-prefetch" href="https://api.coingecko.com" />
+    <link rel="dns-prefetch" href="https://stream.binance.com:9443" />
+
+    <!-- Preload Google Fonts with font-display: swap (via CSS) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
+
+    <!-- CLS Prevention: Declare font metrics to prevent layout shift -->
+    <style>
+      /* Font loading optimization - prevent FOIT/FOUT */
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local('Inter'), local('Inter-Regular');
+      }
+
+      /* Critical CSS for above-the-fold content */
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #071425;
+        color: #CCD6F6;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* Prevent layout shift during loading */
+      #root {
+        min-height: 100vh;
+      }
+
+      /* Loading skeleton animation */
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+
+      .skeleton {
+        background: linear-gradient(90deg, #112240 25%, #1a365d 50%, #112240 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: 4px;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

@@ -739,8 +739,10 @@ export const yycApi = {
 // ═══════════════════════════════════════
 
 export interface ConnectionTestResult {
+  name: string;
   endpoint: string;
   success: boolean;
+  status: string;
   latency: number;
   error?: string;
   data?: unknown;
@@ -766,15 +768,19 @@ export async function runConnectionTests(): Promise<ConnectionTestResult[]> {
     try {
       const resp = await test.fn();
       results.push({
+        name: test.name,
         endpoint: test.name,
         success: true,
+        status: 'OK',
         latency: resp.latency,
         data: resp.data,
       });
     } catch (err: any) {
       results.push({
+        name: test.name,
         endpoint: test.name,
         success: false,
+        status: 'FAILED',
         latency: Math.round(performance.now() - start),
         error: err?.message || String(err),
       });

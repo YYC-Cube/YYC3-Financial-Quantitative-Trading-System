@@ -1,0 +1,30 @@
+# <type>(<scope>): <subject>
+
+## Body (optional)
+
+## Footer (optional)
+
+---
+
+## Type Categories
+# build: Changes that affect the build system or external dependencies
+# ci: Changes to CI configuration files and scripts
+# docs: Documentation only changes
+# feat: A new feature
+# fix: A bug fix
+# perf: A code change that improves performance
+# refactor: Code change that neither fixes a bug nor adds a feature
+# style: Changes that do not affect the meaning of the code
+# test: Adding missing tests or correcting existing tests
+
+## Scope Examples
+# theme: Color/spacing/font changes
+# security: Security headers/rate-limiting/auth
+# performance: Build optimization/bundle size/loading speed
+# module-{name}: Specific business module changes
+
+## Example Commits:
+# fix(security): Add CSP frame-ancestors directive to prevent clickjacking
+# perf(build): Implement Terser minification with console removal
+# docs(phase-0): Complete performance baseline report
+# feat(module-market): Add real-time WebSocket data streaming

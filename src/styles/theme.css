@@ -11,11 +11,11 @@
   --primary: #38B2AC;
   --primary-foreground: #071425;
   --secondary: #112240;
-  --secondary-foreground: oklch(0.985 0 0);
+  --secondary-foreground: oklch(0.965 0.005 250);
   --muted: #1A2D4D;
-  --muted-foreground: #8892B0;
+  --muted-foreground: #94A3B8;
   --accent: #233554;
-  --accent-foreground: oklch(0.985 0 0);
+  --accent-foreground: oklch(0.97 0.005 250);
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
   --border: #233554;
