@@ -17,6 +17,16 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 import { defineConfig } from 'vite'
 
+function chunkStrategy(id: string): string | undefined {
+  if (!id.includes('node_modules')) return undefined
+  if (id.includes('react-dom') || id.includes('scheduler')) return 'vendor-react'
+  if (id.includes('recharts')) return 'vendor-recharts'
+  if (id.includes('lightweight-charts') || id.includes('d3-') || id.includes('d3/')) return 'vendor-chart-trading'
+  if (id.includes('@mui') || id.includes('@emotion')) return 'vendor-mui'
+  if (id.includes('three') || id.includes('reactflow')) return 'vendor-visualization'
+  return undefined
+}
+
 export default defineConfig({
   base: '/',
   server: {
@@ -40,12 +50,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-mui': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
-          'vendor-chart-core': ['recharts'],
-          'vendor-chart-trading': ['lightweight-charts', 'd3'],
-          'vendor-visualization': ['three', 'reactflow'],
-        },
+        manualChunks: chunkStrategy,
       },
     },
   },

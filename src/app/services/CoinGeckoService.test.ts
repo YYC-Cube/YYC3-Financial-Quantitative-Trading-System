@@ -48,7 +48,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should fetch from API when cache is stale or empty', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () =>
           Promise.resolve([
@@ -77,7 +77,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should fall back to localStorage when API fails', async () => {
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
 
       const storedData = [
         {
@@ -108,7 +108,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should generate simulated data as last resort', async () => {
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('API down'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('API down'));
 
       const result = await service.getTopCoins(50);
 
@@ -119,7 +119,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should respect count parameter for API calls', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve([]),
       });
@@ -129,8 +129,8 @@ describe('CoinGeckoService', () => {
 
       await service.getTopCoins(25);
 
-      expect(global.fetch).toHaveBeenCalled();
-      const fetchUrl = (global.fetch as any).mock.calls[0][0];
+      expect(globalThis.fetch).toHaveBeenCalled();
+      const fetchUrl = (globalThis.fetch as any).mock.calls[0][0];
       expect(fetchUrl).toContain('per_page=25');
     });
   });
@@ -220,7 +220,7 @@ describe('CoinGeckoService', () => {
 
   describe('error handling', () => {
     it('should handle HTTP errors gracefully', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: false,
         status: 429,
       });
@@ -231,7 +231,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should handle timeout via AbortController', async () => {
-      global.fetch = vi.fn().mockImplementationOnce(() =>
+      globalThis.fetch = vi.fn().mockImplementationOnce(() =>
         new Promise((_, reject) =>
           setTimeout(() => reject(new Error('AbortError')), 100)
         )
@@ -246,7 +246,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should handle malformed JSON response', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () => Promise.reject(new Error('Invalid JSON')),
       });
@@ -256,7 +256,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should handle missing fields in API response', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () =>
           Promise.resolve([
@@ -279,7 +279,7 @@ describe('CoinGeckoService', () => {
 
   describe('caching behavior', () => {
     it('should update cache after successful API call', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () =>
           Promise.resolve([
@@ -307,7 +307,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should persist data to localStorage after API call', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () =>
           Promise.resolve([
@@ -358,7 +358,7 @@ describe('CoinGeckoService', () => {
         JSON.stringify({ data: storedData, savedAt: Date.now() })
       );
 
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('Fail'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('Fail'));
 
       const result = await service.getTopCoins(50);
 
@@ -369,7 +369,7 @@ describe('CoinGeckoService', () => {
 
   describe('simulated data generation', () => {
     it('should generate realistic-looking data', async () => {
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('No API'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('No API'));
 
       const result = await service.getTopCoins(50);
 
@@ -386,7 +386,7 @@ describe('CoinGeckoService', () => {
     });
 
     it('should include all simulated coins', async () => {
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('No API'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('No API'));
 
       const result = await service.getTopCoins(50);
 

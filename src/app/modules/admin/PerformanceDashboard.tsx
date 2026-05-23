@@ -12,7 +12,6 @@ import { useState, useEffect } from 'react';
 
 import { getAllCircuitBreakerMetrics, type CircuitBreakerMetrics } from '@/app/api/circuit-breaker';
 import { perfMonitor, type PerformanceSnapshot, type RequestLogEntry } from '@/app/api/performance-monitor';
-
 import { Card } from '@/app/components/ui/card';
 
 export const PerformanceDashboard = () => {

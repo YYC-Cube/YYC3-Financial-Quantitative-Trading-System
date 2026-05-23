@@ -1,6 +1,15 @@
 {
-  "timestamp": "2026-05-22T18:23:59.992Z",
-  "durationMs": 3300,
-  "coveragePercent": 11,
-  "testCount": 585
+  "timestamp": "2026-05-23T00:00:00.000Z",
+  "buildDurationMs": 6830,
+  "coveragePercent": 82,
+  "testCount": 862,
+  "testFiles": 45,
+  "buildSizeKB": 5300,
+  "chunkCount": 20,
+  "thresholds": {
+    "buildDurationMsMax": 15000,
+    "coveragePercentMin": 70,
+    "testCountMin": 800,
+    "buildSizeKBMax": 8000
+  }
 }

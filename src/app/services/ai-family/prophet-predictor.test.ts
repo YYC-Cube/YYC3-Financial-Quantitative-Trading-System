@@ -1,7 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import type { FamilyOrchestrationRequest } from './tian-shu-orchestrator';
-
 import {
   ProphetPredictorService,
   getProphetPredictorService,
@@ -10,6 +8,8 @@ import {
   ProphetPredictor,
   type TimeSeriesPoint
 } from './prophet-predictor';
+import type { FamilyOrchestrationRequest } from './tian-shu-orchestrator';
+
 
 function generateTimeSeries(count: number, base = 100, trend = 0.5, noise = 3): TimeSeriesPoint[] {
   const data: TimeSeriesPoint[] = [];

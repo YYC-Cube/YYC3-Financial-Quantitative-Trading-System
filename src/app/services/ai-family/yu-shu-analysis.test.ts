@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import type { FamilyOrchestrationRequest } from './tian-shu-orchestrator';
 import {
   YuShuAnalysisEngine,
   getYuShuAnalysisEngine,
@@ -7,7 +8,6 @@ import {
   type ChartDataPoint,
   type ChartDataset
 } from './yu-shu-analysis';
-import type { FamilyOrchestrationRequest } from './tian-shu-orchestrator';
 
 function generateTestData(count: number, baseValue = 100, volatility = 5): ChartDataPoint[] {
   const data: ChartDataPoint[] = [];

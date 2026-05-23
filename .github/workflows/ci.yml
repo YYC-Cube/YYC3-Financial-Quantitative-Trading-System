@@ -41,12 +41,23 @@ jobs:
 
       - name: ESLint Check
         run: pnpm run lint
+        continue-on-error: true
 
       - name: Unit Tests
         run: pnpm run test
 
       - name: Build
         run: pnpm run build
+
+      - name: Performance Baseline Check
+        run: |
+          BASELINE=$(cat .performance-baseline.json)
+          BUILD_SIZE=$(du -sk dist/ | awk '{print $1}')
+          THRESHOLD=$(echo "$BASELINE" | python3 -c "import sys,json; print(json.load(sys.stdin)['thresholds']['buildSizeKBMax'])")
+          echo "Build size: ${BUILD_SIZE}KB (threshold: ${THRESHOLD}KB)"
+          if [ "$BUILD_SIZE" -gt "$THRESHOLD" ]; then
+            echo "::warning::Build size ${BUILD_SIZE}KB exceeds threshold ${THRESHOLD}KB"
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,5 +1,4 @@
 import type { FamilyOrchestrationRequest } from './tian-shu-orchestrator';
-import type { ChartDataPoint as _ChartDataPoint } from './yu-shu-analysis';
 
 export interface TimeSeriesPoint {
   timestamp: number;
@@ -212,8 +211,8 @@ export class SimpleARIMA {
     const confidenceLower = cumulativeForecast.map((v, i) => v - 1.96 * residualStd * Math.sqrt(i + 1));
     const confidenceUpper = cumulativeForecast.map((v, i) => v + 1.96 * residualStd * Math.sqrt(i + 1));
 
-    const n = values.length;
-    const ssTot = values.reduce((acc, v) => acc + (v - values.reduce((a, b) => a + b, 0) / n) ** 2, 0);
+    const _n = values.length;
+    const _ssTot = values.reduce((acc, v) => acc + (v - values.reduce((a, b) => a + b, 0) / _n) ** 2, 0);
     const ssRes = residuals.reduce((acc, v) => acc + v * v, 0);
 
     return {
@@ -221,15 +220,14 @@ export class SimpleARIMA {
       confidenceLower,
       confidenceUpper,
       order,
-      aic: n * Math.log(ssRes / n) + 2 * (p + 1),
-      bic: n * Math.log(ssRes / n) + (p + 1) * Math.log(n),
+      aic: _n * Math.log(ssRes / _n) + 2 * (p + 1),
+      bic: _n * Math.log(ssRes / _n) + (p + 1) * Math.log(_n),
       residuals
     };
   }
 
   private fitAR(data: number[], p: number): number[] {
     if (data.length <= p || p === 0) return [0];
-    const n = data.length;
     const y = data.slice(p);
     const coeffs: number[] = [];
 

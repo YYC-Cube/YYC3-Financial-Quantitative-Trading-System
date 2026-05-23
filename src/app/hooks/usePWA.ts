@@ -218,7 +218,7 @@ export function usePWA() {
         applicationServerKey: urlBase64ToUint8Array(
           'BEl62iUYgUivxIkvkyVtw91Wiun3H411WpI03SbbGsfM7qRrJcQFi8boRF6ryAkLqY3' +
           '2yG5nPuAHfgc8CrXPfTxDgHZ3kVa'
-        ),
+        ) as BufferSource,
       });
 
       console.log('[PWA] Push notification enabled:', subscription);
@@ -268,7 +268,7 @@ export function usePWA() {
           tag: options.tag || `yyc-${Date.now()}`,
           requireInteraction: options.requireInteraction || false,
           data: options.data || {},
-          actions: options.actions || [],
+          ...(options.actions ? { actions: options.actions } : {}),
         });
 
         return true;

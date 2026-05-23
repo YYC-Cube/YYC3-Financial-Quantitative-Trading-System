@@ -64,7 +64,7 @@ describe('Cross-Module E2E Integration Tests', () => {
         eventPayloads.push(event.payload);
       });
 
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () =>
           Promise.resolve([
@@ -120,7 +120,7 @@ describe('Cross-Module E2E Integration Tests', () => {
       const service = getCoinGeckoService();
       service.clearCache();
 
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
 
       const result = await service.getTopCoins(10);
 

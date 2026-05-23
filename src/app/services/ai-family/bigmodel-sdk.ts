@@ -351,7 +351,7 @@ export function getBigModelSDK(config?: Partial<BigModelConfig> & { apiKey: stri
   if (!sdkInstance) {
     sdkInstance = new BigModelSDK(
       config || {
-        apiKey: process.env.NEXT_PUBLIC_BIGMODEL_API_KEY || process.env.BIGMODEL_API_KEY || 'YOUR_API_KEY'
+        apiKey: (typeof import.meta !== 'undefined' && import.meta.env?.VITE_YYC_BIGMODEL_API_KEY) || 'YOUR_API_KEY'
       }
     );
   }

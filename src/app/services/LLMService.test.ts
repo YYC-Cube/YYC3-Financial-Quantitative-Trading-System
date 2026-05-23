@@ -114,7 +114,7 @@ describe('LLMService', () => {
 
   describe('detectOllama', () => {
     it('should return true when Ollama is running', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
       } as Response);
 
@@ -123,14 +123,14 @@ describe('LLMService', () => {
     });
 
     it('should return false when Ollama is not running', async () => {
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
 
       const result = await detectOllama();
       expect(result).toBe(false);
     });
 
     it('should return false on timeout', async () => {
-      global.fetch = vi.fn().mockImplementationOnce(() =>
+      globalThis.fetch = vi.fn().mockImplementationOnce(() =>
         new Promise((_, reject) =>
           setTimeout(() => reject(new DOMException('Aborted', 'AbortError')), 100)
         )
@@ -157,7 +157,7 @@ describe('LLMService', () => {
     });
 
     it('should succeed for ollama without API key', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         text: () => Promise.resolve('{}'),
       } as Response);
@@ -169,7 +169,7 @@ describe('LLMService', () => {
     });
 
     it('should handle HTTP errors for ollama', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: false,
         status: 500,
         text: () => Promise.resolve('Internal Server Error'),
@@ -181,7 +181,7 @@ describe('LLMService', () => {
     });
 
     it('should handle network errors gracefully', async () => {
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('Network unreachable'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('Network unreachable'));
 
       const result = await testModelConnectivity('ollama', 'qwen2.5:7b');
       expect(result.ok).toBe(false);
@@ -189,7 +189,7 @@ describe('LLMService', () => {
     });
 
     it('should handle timeout errors', async () => {
-      global.fetch = vi.fn().mockImplementationOnce(() =>
+      globalThis.fetch = vi.fn().mockImplementationOnce(() =>
         new Promise((_, reject) =>
           setTimeout(() => reject(new DOMException('Aborted', 'AbortError')), 10)
         )
@@ -203,7 +203,7 @@ describe('LLMService', () => {
     it('should work with bearer token authentication (openai)', async () => {
       setApiKey('openai', 'sk-test-openai');
       
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         text: () => Promise.resolve('{}'),
       } as Response);
@@ -215,7 +215,7 @@ describe('LLMService', () => {
     it('should work with x-api-key authentication (anthropic)', async () => {
       setApiKey('anthropic', 'sk-ant-test');
       
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         text: () => Promise.resolve('{}'),
       } as Response);
@@ -247,7 +247,7 @@ describe('LLMService', () => {
     });
 
     it('should send chat to ollama successfully', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({
           message: { content: 'Response from Ollama' },
@@ -268,7 +268,7 @@ describe('LLMService', () => {
     });
 
     it('should include usage information when available', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({
           choices: [{ message: { content: 'AI Response' } }],
@@ -294,7 +294,7 @@ describe('LLMService', () => {
     });
 
     it('should handle chat errors gracefully', async () => {
-      global.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
+      globalThis.fetch = vi.fn().mockRejectedValueOnce(new Error('Network error'));
 
       const request: ChatRequest = {
         model: 'qwen2.5:7b',
@@ -318,7 +318,7 @@ describe('LLMService', () => {
     });
 
     it('should handle empty messages array in chat request', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({
           message: { content: '' },
@@ -336,7 +336,7 @@ describe('LLMService', () => {
     });
 
     it('should handle system role in messages', async () => {
-      global.fetch = vi.fn().mockResolvedValueOnce({
+      globalThis.fetch = vi.fn().mockResolvedValueOnce({
         ok: true,
         json: () => Promise.resolve({
           message: { content: 'System understood' },

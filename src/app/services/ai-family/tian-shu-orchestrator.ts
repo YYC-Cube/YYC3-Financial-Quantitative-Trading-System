@@ -405,7 +405,7 @@ export class TianShuOrchestrator {
       status: this.members.size >= 5 ? 'healthy' : this.members.size >= 3 ? 'degraded' : 'unhealthy',
       registeredMembers: this.members.size,
       totalMembersAvailable: AI_FAMILY_MEMBERS.length,
-      uptime: process.uptime()
+      uptime: typeof performance !== 'undefined' ? performance.now() / 1000 : 0
     };
   }
 

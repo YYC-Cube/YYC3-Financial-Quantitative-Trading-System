@@ -155,63 +155,68 @@ const RBAC_MATRIX: Record<UserRole, Record<string, Set<ModulePermission>>> = {
 };
 
 // ═══════════════════════════════════════
-// §3  Mock Users (Development)
+// §3  Mock Users (Development Only)
 // ═══════════════════════════════════════
 
-const MOCK_USERS: Record<string, { password: string; user: AuthUser }> = {
+const IS_DEV = import.meta.env?.DEV ?? false;
+
+const DEV_MOCK_PASSWORDS: Record<string, string> = IS_DEV
+  ? {
+      admin: import.meta.env.VITE_YYC_MOCK_ADMIN_PW || 'dev_admin_2026',
+      trader: import.meta.env.VITE_YYC_MOCK_TRADER_PW || 'dev_trader_2026',
+      analyst: import.meta.env.VITE_YYC_MOCK_ANALYST_PW || 'dev_analyst_2026',
+      viewer: import.meta.env.VITE_YYC_MOCK_VIEWER_PW || 'dev_viewer_2026',
+    }
+  : {};
+
+const MOCK_USER_TEMPLATES: Record<string, Omit<AuthUser, 'lastLoginAt'>> = {
   admin: {
-    password: 'admin123',
-    user: {
-      id: 'usr_001',
-      username: 'admin',
-      displayName: '系统管理员',
-      email: 'admin@yyc-qats.io',
-      role: 'admin',
-      avatar: undefined,
-      lastLoginAt: Date.now(),
-      createdAt: '2025-01-01T00:00:00Z',
-    },
+    id: 'usr_001',
+    username: 'admin',
+    displayName: '系统管理员',
+    email: 'admin@yyc-qats.io',
+    role: 'admin',
+    createdAt: '2025-01-01T00:00:00Z',
   },
   trader: {
-    password: 'trader123',
-    user: {
-      id: 'usr_002',
-      username: 'trader',
-      displayName: '交易员',
-      email: 'trader@yyc-qats.io',
-      role: 'trader',
-      avatar: undefined,
-      lastLoginAt: Date.now(),
-      createdAt: '2025-03-15T00:00:00Z',
-    },
+    id: 'usr_002',
+    username: 'trader',
+    displayName: '交易员',
+    email: 'trader@yyc-qats.io',
+    role: 'trader',
+    createdAt: '2025-03-15T00:00:00Z',
   },
   analyst: {
-    password: 'analyst123',
-    user: {
-      id: 'usr_003',
-      username: 'analyst',
-      displayName: '分析师',
-      email: 'analyst@yyc-qats.io',
-      role: 'analyst',
-      avatar: undefined,
-      lastLoginAt: Date.now(),
-      createdAt: '2025-06-01T00:00:00Z',
-    },
+    id: 'usr_003',
+    username: 'analyst',
+    displayName: '分析师',
+    email: 'analyst@yyc-qats.io',
+    role: 'analyst',
+    createdAt: '2025-06-01T00:00:00Z',
   },
   viewer: {
-    password: 'viewer123',
-    user: {
-      id: 'usr_004',
-      username: 'viewer',
-      displayName: '观察者',
-      email: 'viewer@yyc-qats.io',
-      role: 'viewer',
-      avatar: undefined,
-      lastLoginAt: Date.now(),
-      createdAt: '2025-09-01T00:00:00Z',
-    },
+    id: 'usr_004',
+    username: 'viewer',
+    displayName: '观察者',
+    email: 'viewer@yyc-qats.io',
+    role: 'viewer',
+    createdAt: '2025-09-01T00:00:00Z',
   },
 };
+
+function getMockUsers(): Record<string, { password: string; user: AuthUser }> {
+  if (!IS_DEV) return {};
+  const users: Record<string, { password: string; user: AuthUser }> = {};
+  for (const [username, template] of Object.entries(MOCK_USER_TEMPLATES)) {
+    users[username] = {
+      password: DEV_MOCK_PASSWORDS[username],
+      user: { ...template, lastLoginAt: Date.now() },
+    };
+  }
+  return users;
+}
+
+const MOCK_USERS = getMockUsers();
 
 // ═══════════════════════════════════════
 // §4  JWT Utilities (Mock)

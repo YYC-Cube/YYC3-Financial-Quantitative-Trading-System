@@ -61,22 +61,28 @@ class UserExperienceEnhancer {
   private displayFeedbackNotification(feedback: UserFeedback): void {
     const notification = document.createElement('div');
     notification.className = `ux-feedback ux-feedback-${feedback.type}`;
-    notification.innerHTML = `
-      <div class="ux-feedback-content">
-        <span class="ux-feedback-message">${feedback.message}</span>
-        ${feedback.action ? `<button class="ux-feedback-action">${feedback.action.label}</button>` : ''}
-      </div>
-    `;
 
-    document.body.appendChild(notification);
+    const content = document.createElement('div');
+    content.className = 'ux-feedback-content';
+
+    const message = document.createElement('span');
+    message.className = 'ux-feedback-message';
+    message.textContent = feedback.message;
+    content.appendChild(message);
 
     if (feedback.action) {
-      const actionBtn = notification.querySelector('.ux-feedback-action');
-      actionBtn?.addEventListener('click', () => {
+      const actionBtn = document.createElement('button');
+      actionBtn.className = 'ux-feedback-action';
+      actionBtn.textContent = feedback.action.label;
+      actionBtn.addEventListener('click', () => {
         feedback.action!.onClick();
         this.hideFeedbackNotification();
       });
+      content.appendChild(actionBtn);
     }
+
+    notification.appendChild(content);
+    document.body.appendChild(notification);
 
     requestAnimationFrame(() => {
       notification.classList.add('ux-feedback-visible');
@@ -129,23 +135,50 @@ class UserExperienceEnhancer {
   private showGuideTooltip(step: UserGuideStep, _targetElement: Element): void {
     const tooltip = document.createElement('div');
     tooltip.className = `ux-guide-tooltip ux-guide-tooltip-${step.position || 'bottom'}`;
-    tooltip.innerHTML = `
-      <div class="ux-guide-header">
-        <h3>${step.title}</h3>
-        <span class="ux-guide-step-indicator">${this.currentStepIndex + 1}/${this.guideSteps.length}</span>
-      </div>
-      <div class="ux-guide-content">${step.content}</div>
-      <div class="ux-guide-footer">
-        ${this.currentStepIndex > 0 ? '<button class="ux-guide-prev">上一步</button>' : ''}
-        ${step.action ? `<button class="ux-guide-action">${step.action.label}</button>` : ''}
-        <button class="ux-guide-next">${this.currentStepIndex === this.guideSteps.length - 1 ? '完成' : '下一步'}</button>
-      </div>
-    `;
+
+    const header = document.createElement('div');
+    header.className = 'ux-guide-header';
+    const title = document.createElement('h3');
+    title.textContent = step.title;
+    const indicator = document.createElement('span');
+    indicator.className = 'ux-guide-step-indicator';
+    indicator.textContent = `${this.currentStepIndex + 1}/${this.guideSteps.length}`;
+    header.appendChild(title);
+    header.appendChild(indicator);
+    tooltip.appendChild(header);
+
+    const guideContent = document.createElement('div');
+    guideContent.className = 'ux-guide-content';
+    guideContent.textContent = step.content;
+    tooltip.appendChild(guideContent);
+
+    const footer = document.createElement('div');
+    footer.className = 'ux-guide-footer';
+
+    if (this.currentStepIndex > 0) {
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'ux-guide-prev';
+      prevBtn.textContent = '上一步';
+      footer.appendChild(prevBtn);
+    }
+
+    if (step.action) {
+      const actionBtn = document.createElement('button');
+      actionBtn.className = 'ux-guide-action';
+      actionBtn.textContent = step.action.label;
+      actionBtn.addEventListener('click', () => step.action!.onClick());
+      footer.appendChild(actionBtn);
+    }
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'ux-guide-next';
+    nextBtn.textContent = this.currentStepIndex === this.guideSteps.length - 1 ? '完成' : '下一步';
+    footer.appendChild(nextBtn);
+    tooltip.appendChild(footer);
 
     document.body.appendChild(tooltip);
 
-    const nextBtn = tooltip.querySelector('.ux-guide-next');
-    nextBtn?.addEventListener('click', () => this.nextGuideStep());
+    nextBtn.addEventListener('click', () => this.nextGuideStep());
 
     const prevBtn = tooltip.querySelector('.ux-guide-prev');
     prevBtn?.addEventListener('click', () => this.prevGuideStep());
