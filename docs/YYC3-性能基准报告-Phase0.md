@@ -1,9 +1,10 @@
 # YYC³-QATS 性能基准报告
+
 ## Phase 0 Node 0.2 - 构建性能基线测试
 
-**测试日期**: 2026-05-22  
-**构建环境**: Vite 6.3.5 + Terser  
-**Node版本**: v20.x  
+**测试日期**: 2026-05-22
+**构建环境**: Vite 6.3.5 + Terser
+**Node版本**: v20.x
 **状态**: ✅ 基线已建立
 
 ---
@@ -41,6 +42,7 @@
 ## 🔍 关键发现
 
 ### ✅ 优势
+
 1. **Terser压缩生效**: console.log/debugger已被移除
 2. **代码分割有效**: 8大模块已独立分包
 3. **CSS体积合理**: 仅20.80 KB (Tailwind CSS按需生成)
@@ -48,30 +50,37 @@
 ### ⚠️ 需要优化项
 
 #### 1. 空Chunk问题 (P1)
+
 ```
 vendor-react-l0sNRNKZ.js    → 0.00 KB (空)
 vendor-three-l0sNRNKZ.js    → 0.00 KB (空)
 vendor-utils-l0sNRNKZ.js    → 0.00 KB (空)
 ```
-**原因**: React/Three/date-fns被内联到主bundle中  
-**影响**: 无功能影响，但浪费HTTP请求  
+
+**原因**: React/Three/date-fns被内联到主bundle中
+**影响**: 无功能影响，但浪费HTTP请求
 **修复**: 移除无效的manualChunks配置
 
 #### 2. AdminModule过大 (P1)
+
 ```
-AdminModule-C9xLdgA7.js → 505 KB (110 KB gzip) 
+AdminModule-C9xLdgA7.js → 505 KB (110 KB gzip)
 占比: 24.4% (第二大chunk)
 ```
-**原因**: 可能包含大量管理界面组件和依赖  
-**建议**: 
+
+**原因**: 可能包含大量管理界面组件和依赖
+**建议**:
+
 - 懒加载 (动态import)
 - 子模块拆分 (ConfigCenter/DocsModule/Diagnostics等)
 
 #### 3. 主入口包偏大 (P2)
+
 ```
 index-VHxPLPhv.js → 400 KB (107 KB gzip)
 ```
-**原因**: MUI库 + 全局Provider + 路由配置  
+
+**原因**: MUI库 + 全局Provider + 路由配置
 **建议**: 将MUI移至独立vendor chunk
 
 ---
@@ -97,6 +106,7 @@ index-VHxPLPhv.js → 400 KB (107 KB gzip)
 ### P0 - 立即执行 (本周)
 
 #### 1. 清理空Chunk配置
+
 ```typescript
 // vite.config.ts - 移除以下配置
 manualChunks: {
@@ -104,7 +114,7 @@ manualChunks: {
   // 'vendor-react': ['react', 'react-dom'],
   // 'vendor-three': ['three'],
   // 'vendor-utils': ['date-fns'],
-  
+
   'vendor-mui': ['@mui/material', '@mui/icons-material'], // 保留
   'vendor-chart': ['recharts', 'lightweight-charts'],     // 保留
 }
@@ -113,6 +123,7 @@ manualChunks: {
 **预期收益**: 减少3个无效HTTP请求 (~100ms)
 
 #### 2. AdminModule懒加载
+
 ```typescript
 // App.tsx 或路由配置中
 const AdminModule = lazy(() => import('./modules/admin/AdminModule'));
@@ -128,11 +139,13 @@ const AdminModule = lazy(() => import('./modules/admin/AdminModule'));
 ### P1 - 短期优化 (2周内)
 
 #### 3. MUI Vendor Chunk分离
+
 将@mui/material从主入口提取，减少index-VHxPLPhv.js体积
 
 **预期收益**: 主入口减少40-60KB
 
 #### 4. 图片/字体优化
+
 - WebP格式转换
 - Font subsetting (仅加载使用的中文字符)
 - Lazy loading图片
@@ -142,11 +155,13 @@ const AdminModule = lazy(() => import('./modules/admin/AdminModule'));
 ### P2 - 中期规划 (Month 1)
 
 #### 5. 引入虚拟化列表
+
 对K线数据、订单列表使用react-window
 
 **预期收益**: 大数据量场景FPS提升至60
 
 #### 6. Service Worker缓存
+
 配置workbox运行时缓存策略
 
 **预期收益**: 回访用户加载时间减少80%
@@ -180,24 +195,27 @@ const AdminModule = lazy(() => import('./modules/admin/AdminModule'));
 ## 📝 下一步行动
 
 ### 立即执行 (Today)
+
 - [ ] 修复空Chunk问题 (编辑vite.config.ts)
 - [ ] 实施AdminModule懒加载
 - [ ] 重新build并对比Bundle Size
 
 ### 本周完成
+
 - [ ] 运行Lighthouse审计 (获取真实Performance分数)
 - [ ] 配置Web Vitals监控
 - [ ] 创建性能回归测试脚本
 
 ### 下次评审
+
 - [ ] 对比优化前后指标
 - [ ] 更新路线图进度
 - [ ] 决定是否进入Phase 1
 
 ---
 
-**报告生成者**: YYC³ Team + AI Assistant  
-**审核状态**: 待团队确认  
+**报告生成者**: YYC³ Team + AI Assistant
+**审核状态**: 待团队确认
 **下次更新**: 优化实施后重新测试
 
 ---

@@ -4,9 +4,10 @@
 
 "Yunshu Quantitative Analysis Trading System"的完整系统。根据要求，系统需要完整完善，接口清晰。全栈文件需要完整可用，并且具备文档。
 
-🚨：基于系统设定及上述内容进行设计"云枢量化分析系统"   
+🚨：基于系统设定及上述内容进行设计"云枢量化分析系统"
 
 ---
+
 file: docs/YYC-QATS-Figma-Product-Module-Design.md
 description: YYC3 Figma产品模块设计文档,提供完整的系统设计和可视化UI板块
 author: YanYuCloudCube Team <admin@0379.email>
@@ -41,7 +42,7 @@ language: zh-CN
 每个模块需要独立自治，可单独运行，并且每个模块内的数据面板都要支持点击跳转操作。
 接下来，我们需要设计项目结构，包括前端、后端、文档等部分。同时，需要编写README文件，包含项目概述、技术栈、开发环境设置、项目结构、核心功能模块、API文档、组件库、状态管理、路由系统、错误处理、测试指南、部署流程、贡献指南、常见问题等内容。
 
-## 云枢量化分析交易系统主要模块划分：
+## 云枢量化分析交易系统主要模块划分
 
 1. 策略编辑模块：提供丰富的函数与指标支持，灵活的条件设置，策略组合与优化。
 2. 数据处理模块：实时数据获取，数据清洗与整理，数据存储与管理。
@@ -100,10 +101,13 @@ language: zh-CN
 接口示例：
 
 - 创建策略：
+
 ```json
 POST /api/strategy
 ```
+
 - 请求体：
+
 ```json
 {
 "name": "双均线策略",
@@ -115,14 +119,18 @@ POST /api/strategy
 }
 }
 ```
+
 - 响应：
+
 ```json
 {
 "strategy_id": "str123",
 "status": "created"
 }
 ```
+
 - 请求体：
+
 ```json
 {
 "name": "双均线策略",
@@ -135,14 +143,18 @@ POST /api/strategy
 }
 
 ```
+
 - 响应：
+
 ```json
 {
 "strategy_id": "str123",
 "status": "created"
 }
 ```
+
 - 请求体：
+
 ```json
 {
 "name": "双均线策略",
@@ -154,14 +166,18 @@ POST /api/strategy
 }
 }
 ```
+
 响应：
+
 ```json
 {
 "strategy_id": "str123",
 "status": "created"
 }
 ```
+
 - 请求体：
+
 ```json
 {
 "name": "双均线策略",
@@ -173,14 +189,18 @@ POST /api/strategy
 }
 }
 ```
+
 - 响应：
+
 ```json
 {
 "strategy_id": "str123",
 "status": "created"
 }
 ```
+
 - 请求体：
+
 ```json
 {
 "name": "双均线策略",
@@ -192,18 +212,24 @@ POST /api/strategy
 }
 }
 ```
+
 - 响应：
+
 ```json
 {
 "strategy_id": "str123",
 "status": "created"
 }
 ```
+
 - 回测策略：
+
 ```json
 POST /api/strategy/backtest
 ```
+
 - 请求体：
+
 ```json
 {
 "strategy_id": "str123",
@@ -213,7 +239,9 @@ POST /api/strategy/backtest
 "symbol": "600000.SH"
 }
 ```
+
 - 响应：
+
 ```json
 {
 "backtest_id": "bt456",
@@ -221,7 +249,7 @@ POST /api/strategy/backtest
 }
 ```
 
-### 二、数据处理模块功能：
+### 二、数据处理模块功能
 
 1. 实时数据获取：对接交易所数据接口，获取实时行情。
 2. 数据清洗与整理：去除重复数据、纠正错误数据、填补缺失值。
@@ -230,10 +258,13 @@ POST /api/strategy/backtest
 接口示例：
 
 - 获取实时行情：
+
 ```json
 GET /api/market/realtime?symbol=600000.SH
 ```
+
 - 响应：
+
 ```json
 {
 "symbol": "600000.SH",
@@ -244,11 +275,15 @@ GET /api/market/realtime?symbol=600000.SH
 "ask": 10.51
 }
 ```
+
 - 获取历史数据：
+
 ```json
 GET /api/market/history?symbol=600000.SH&start_date=2025-08-01&end_date=2025-08-21
 ```
+
 - 响应：
+
 ```json
 {
 "data": [
@@ -265,17 +300,21 @@ GET /api/market/history?symbol=600000.SH&start_date=2025-08-01&end_date=2025-08-
 }
 ```
 
-### 三、自动下单功能（交易执行模块）功能：
+### 三、自动下单功能（交易执行模块）功能
 
 1. 精准下单执行：根据策略信号自动下单。
 2. 交易风险控制：实时监测风险，触发风控措施。
 3. 多市场与多账户支持：支持股票、期货等市场，管理多个账户。
 接口示例：
+
 - 下单：
+
 ```json
 POST /api/trade/order
 ```
+
 - 请求体：
+
 ```json
 {
 "account_id": "acc123",
@@ -287,18 +326,24 @@ POST /api/trade/order
 "strategy_id": "str123"
 }
 ```
+
 - 响应：
+
 ```json
 {
 "order_id": "ord789",
 "status": "submitted"
 }
 ```
+
 - 查询订单：
+
 ```json
 GET /api/trade/order?order_id=ord789
 ```
+
 - 响应：
+
 ```json
 {
 "order_id": "ord789",
@@ -312,66 +357,91 @@ GET /api/trade/order?order_id=ord789
 四、GLM4.7集成模块
 
 功能：
+
 1. 智能策略生成与优化：根据用户描述生成策略代码，优化策略参数。
 2. 复杂数据解读与整合：解读多源数据，发现数据关联，识别异常数据。
 3. 实时交易决策支持：分析市场动态，评估交易信号，提供决策建议。
 接口示例：
 生成策略：
+
 ```json
 POST /api/glm4.5/generate_strategy
 ```
+
 请求体：
+
 ```json
 {
 "description": "构建一个在市场震荡时期，利用行业轮动和低估值股票进行套利的量化交易策略"
 }
 ```
+
 响应：
+
 ```json
 {
 "strategy_code": "行业轮动策略代码...",
 "explanation": "该策略首先选择低估值股票，然后根据行业轮动规律进行调仓..."
 }
 ```
+
 - 数据解读：
+
 ```json
 POST /api/glm4.5/interpret_data
 ```
+
 - 请求体：
+
 ```json
 {
 "data": "股票600000.SH最近5日成交量放大，但价格横盘",
 "context": "当前市场处于震荡期"
 }
 ```
+
 - 响应：
+
 ```json
 {
 "interpretation": "成交量放大但价格横盘可能表明有资金在悄悄吸筹，建议关注后续突破方向..."
 }
 ```
+
 五、系统管理模块
 功能：
+
 1. 用户管理：注册、登录、权限控制。
 2. 系统监控：监控服务状态、资源使用情况。
 接口示例：
-- 用户登录： 
+
+- 用户登录：
+
 ```json
 POST /api/auth/login
 ```
+
 - 请求体
+
 ```json
-{ "username": "user1", "password": "pass123" } 
+{ "username": "user1", "password": "pass123" }
 ```
+
 - 响应：
+
 ```json
 { "token": "jwt_token_string", "expires_in": 3600 }
 ```
-## 全栈文件结构：
+
+## 全栈文件结构
+
 ## 一、系统架构设计
+
 ### 1. 整体架构
+
 “云枢量化分析系统”
 采用微服务架构，分为前端展示层、业务逻辑层、数据存储层和外部接口层，实现高内聚低耦合的系统设计。
+
 ```plaintext
 ┌─────────────────────────────────────────────────────────────┐
 │                    前端展示层 (Web/APP)                     │
@@ -393,42 +463,51 @@ POST /api/auth/login
 └─────────────────────────────────────────────────────────────┘
 
 ```
+
 ### 2. 核心模块设计
+
 #### (1) 策略编辑模块
+
 - 功能：提供策略编写、测试、优化功能
 - 技术实现：
-    - 基于Python的策略引擎，支持自定义函数库
-    - 可视化策略编辑器，支持拖拽式策略构建
-    - 策略回测引擎，支持多周期、多品种回测
-    - 参数优化功能，支持遗传算法、网格搜索等优化方法
+  - 基于Python的策略引擎，支持自定义函数库
+  - 可视化策略编辑器，支持拖拽式策略构建
+  - 策略回测引擎，支持多周期、多品种回测
+  - 参数优化功能，支持遗传算法、网格搜索等优化方法
+
 #### (2) 数据处理模块
+
 - 功能：实时数据获取、清洗、存储与管理
 - 技术实现：
-    - 多源数据接入：支持交易所数据、第三方数据源
-    - 数据清洗流水线：异常值检测、缺失值填充、数据标准化
-    - 分布式数据存储：时序数据存储在InfluxDB，结构化数据存储在PostgreSQL
-    - 实时数据流处理：基于Kafka的数据流处理框架
+  - 多源数据接入：支持交易所数据、第三方数据源
+  - 数据清洗流水线：异常值检测、缺失值填充、数据标准化
+  - 分布式数据存储：时序数据存储在InfluxDB，结构化数据存储在PostgreSQL
+  - 实时数据流处理：基于Kafka的数据流处理框架
+
 #### (3) 交易执行模块
+
 - 功能：自动下单、风险控制、多账户管理
 - 技术实现：
-    - 低延迟交易引擎，支持微秒级订单执行
-    - 多市场适配：股票、期货、期权市场统一接口
-    - 风险控制系统：实时监控持仓、资金、波动率等风险指标
-    - 多账户管理：支持账户分组、资金分配、权限控制
+  - 低延迟交易引擎，支持微秒级订单执行
+  - 多市场适配：股票、期货、期权市场统一接口
+  - 风险控制系统：实时监控持仓、资金、波动率等风险指标
+  - 多账户管理：支持账户分组、资金分配、权限控制
+
 #### (4) GLM4.5智能分析模块
+
 - 功能：智能策略生成、市场分析、决策支持
 - 技术实现：
-    - 自然语言处理接口：支持策略描述转代码
-    - 市场情绪分析：基于新闻、社交媒体的情感分析
-    - 异常检测：识别市场异常波动和交易机会
-    - 策略动态调整：根据市场变化自动优化策略参数
-
+  - 自然语言处理接口：支持策略描述转代码
+  - 市场情绪分析：基于新闻、社交媒体的情感分析
+  - 异常检测：识别市场异常波动和交易机会
+  - 策略动态调整：根据市场变化自动优化策略参数
 
 ## 二、接口设计
 
 ### 1. 核心API接口
 
 #### (1) 策略管理接口
+
 ```python
 # 创建策略
 POST /api/v1/strategies
@@ -463,7 +542,9 @@ POST /api/v1/strategies/{strategy_id}/optimize
 }
 
 ```
+
 #### (2) 数据服务接口
+
 ```python
 # 获取实时行情
 GET /api/v1/market/realtime?symbol=000001.SZ
@@ -494,7 +575,9 @@ GET /api/v1/market/history?symbol=000001.SZ&start_date=2025-08-01&end_date=2025-
 }
 
 ```
+
 #### (3) 交易执行接口
+
 ```python
 # 下单
 POST /api/v1/trading/orders
@@ -534,7 +617,9 @@ GET /api/v1/trading/positions?account_id=acc_12345
 }
 
 ```
+
 #### (4) GLM4.5智能分析接口
+
 ```python
 # 生成策略
 POST /api/v1/glm4.5/generate_strategy
@@ -577,8 +662,11 @@ POST /api/v1/glm4.5/analyze_market
 }
 
 ```
+
 ### 2. 内部服务接口
+
 #### (1) 数据处理服务接口
+
 ```python
 # 数据清洗
 POST /internal/data/clean
@@ -603,7 +691,9 @@ POST /internal/data/store
 }
 
 ```
+
 #### (2) 风险控制接口
+
 ```python
 # 风险检查
 POST /internal/risk/check
@@ -629,7 +719,9 @@ POST /internal/risk/check
 }
 
 ```
+
 ## 三、全栈文件结构
+
 ```plaintext
 H-8-epoch-quant-system/
 ├── frontend/                   # 前端应用
@@ -675,32 +767,43 @@ H-8-epoch-quant-system/
     └── deploy.sh               # 部署脚本
 
 ```
+
 ## 四、系统文档
+
 ### 1. 系统设计文档 (docs/design/system_design.md)
+
 - 系统架构图及说明
 - 核心模块设计细节
 - 数据流设计
 - 安全设计
 - 性能优化策略
+
 ### 2. API文档 (docs/api/api_reference.md)
+
 - 所有API接口详细说明
 - 请求/响应格式
 - 错误码说明
 - 认证授权方式
 - 示例代码
+
 ### 3. 部署文档 (docs/deployment/deployment_guide.md)
+
 - 系统环境要求
 - 部署步骤说明
 - Docker部署方式
 - 配置说明
 - 监控与日志
+
 ### 4. 用户指南 (docs/user_guide/user_manual.md)
+
 - 系统功能介绍
 - 策略开发指南
 - 数据分析指南
 - 交易操作指南
 - 常见问题解答
+
 ### 5. 开发者指南 (docs/developer_guide/developer_manual.md)
+
 - 开发环境搭建
 - 代码规范
 - 模块开发指南
