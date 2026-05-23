@@ -1,0 +1,127 @@
+---
+file: 0103-数据层架构-001-IndexedDB数据管理.md
+description: IndexedDB(idb 8.0.3)本地存储方案：交易数据缓存、用户偏好持久化、离线数据支持
+author: YanYuCloudCube Team
+version: v2.3.1
+created: 2026-05-23
+updated: 2026-05-23
+status: published
+tags: 数据层,IndexedDB,本地存储
+category: 0103 数据层架构 001 IndexedDB数据管理
+language: zh-CN
+project: YYC³-QATS (YanYu Cloud Quantitative Analysis Trading System)
+tech_stack: Vite 6 | React 18 | TypeScript | Tailwind CSS | pnpm | Vitest
+ai_engine: BigModel-Z.ai SDK + AI Family 8 Members + MCP Server
+deployment: GitHub + 0379.world
+---
+
+> ***YYC³-QATS (YanYu Cloud Quantitative Analysis Trading System)***
+> *言启千行代码，语枢万物智能*
+> ***Words inspire thousands of lines of code, language pivots the intelligence of all things***
+> *金融量化交易系统 | AI Family 八大成员协同*
+> ***Financial Quantitative Trading System | 8 AI Family Members Collaborative Intelligence***
+>
+> **技术栈**: Vite 6 | React 18 | TypeScript | Tailwind CSS | Recharts | pnpm | Vitest
+> **AI引擎**: BigModel-Z.ai SDK | AI Family 8 Members | MCP Server
+> **部署**: GitHub | 0379.world
+
+---
+
+# 0103 数据层架构 001 IndexedDB数据管理
+
+## 核心理念
+
+**五高架构**：高可用性 | 高性能 | 高安全性 | 高扩展性 | 高智能性
+**五标体系**：标准化 | 规范化 | 自动化 | 可视化 | 智能化
+**五化转型**：流程化 | 数字化 | 生态化 | 工具化 | 服务化
+**五维评估**：时间维 | 空间维 | 属性维 | 事件维 | 关联维
+
+## 技术栈全景图
+
+| 层级 | 技术 | 版本 | 用途 |
+|------|------|------|------|
+| **构建** | Vite | 6.3.5 | 新一代前端构建工具，极速HMR |
+| **UI库** | React | ^18.3.1 | 声明式UI组件库 |
+| **语言** | TypeScript | ^5.x | 类型安全开发 (严格模式) |
+| **样式** | Tailwind CSS | ^4.1.12 | 原子化CSS框架 |
+| **图表** | Recharts + lightweight-charts | 2.15.2 / 5.1.0 | 数据可视化 + 金融图表 |
+| **数据库** | IndexedDB (idb) | ^8.0.3 | 客户端本地存储 |
+| **包管理** | pnpm | 10.x | 快速、节省磁盘的包管理器 |
+| **测试** | Vitest | ^4.1.7 | Vite原生测试框架 |
+| **AI** | BigModel-Z.ai SDK + MCP | 最新 | AI Family 8成员 + 20工具 |
+| **部署** | GitHub + Vite Build | - | 静态构建 + 0379.world |
+
+## AI Family 成员矩阵
+
+```
+┌───────────────────────────────────────────────────────────────┐
+│                    YYC³ AI Family 成员矩阵                    │
+├───────────────────────────────────────────────────────────────┤
+│  🧠 元启·天枢 TianShu   总指挥 · 智能路由 · 编排调度         │
+│  🧭 言启·千行 QianHang  NLU引擎 · 意图识别 · 实体抽取        │
+│  🤔 语枢·万物 YuShu     数据分析 · 统计指标 · 报告生成        │
+│  🔮 预见·先知 Prophet   趋势预测 · ARIMA+Prophet · 异常检测   │
+│  🎯 千里·伯乐 Bole      个性化推荐 · 用户画像 · 策略匹配      │
+│  🛡️ 智云·守护 Guardian   安全监控 · 威胁检测 · 速率限制       │
+│  📚 格物·宗师 Grandmaster 质量审计 · 6维评分 · 架构分析       │
+│  🎨 创想·灵韵 Grace     创意生成 · 配色方案 · 营销文案        │
+└───────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 文档概述
+
+IndexedDB(idb 8.0.3)本地存储方案：交易数据缓存、用户偏好持久化、离线数据支持
+
+---
+
+## 概述
+
+本节描述：IndexedDB(idb 8.0.3)本地存储方案：交易数据缓存、用户偏好持久化、离线数据支持
+
+---
+
+## 详细内容
+
+> 待补充具体内容（由对应模块负责人完善）
+
+---
+
+## 关联资源
+
+- 标签: [数据层],[IndexedDB],[本地存储]
+- 所属模块: 01-架构设计与技术栈 / 0103-数据层架构
+
+---
+
+
+## 文档追溯信息
+
+| 属性 | 值 |
+|------|-----|
+| 文档版本 | v2.3.1 |
+| 创建日期 | 2026-05-23 |
+| 更新日期 | 2026-05-23 |
+| 内容校验 |  |
+| 关联文档 | 无 |
+| 所属项目 | YYC³-QATS (金融量化交易系统) |
+| 技术栈 | Vite 6 | React 18 | TypeScript | Tailwind CSS | pnpm |
+| AI引擎 | BigModel-Z.ai SDK + AI Family 8 Members |
+| 部署环境 | GitHub + 0379.world |
+
+---
+
+<div align="center">
+
+> 「***YYC³-QATS***」
+> 「***金融量化交易系统***」
+> 「***Words inspire thousands of lines of code, language pivots the intelligence of all things***」
+> 「***言启千行代码，语枢万物智能***」
+>
+> **技术栈**: Vite 6 | React 18 | TypeScript | Tailwind CSS | pnpm
+> **AI引擎**: BigModel-Z.ai SDK + AI Family 8 Members
+> **部署**: GitHub | **域名**: 0379.world
+
+**© 2025-2026 YYC³ Team. All Rights Reserved.**
+</div>

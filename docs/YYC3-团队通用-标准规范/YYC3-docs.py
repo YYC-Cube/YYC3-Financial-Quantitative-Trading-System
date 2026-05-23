@@ -283,7 +283,7 @@ project: YYC³-QATS
 
 ## 文档规范
 
-- **命名规范**：`{编号}-{阶段}-{模块}-{文档名称}.md`
+- **命名规范**：`{{编号}}-{{阶段}}-{{模块}}-{{文档名称}}.md`
 - **版本规范**：主版本.次版本.修订版本 (如 v2.3.1)
 - **标签规范**：使用方括号包裹，如 `[标签1],[标签2]`
 - **技术栈要求**：所有文档需基于 Vite + React + TypeScript 架构描述
@@ -545,12 +545,88 @@ class DocumentProjectStructure:
     }
 
 
+def generate_docs_structure(output_dir: str):
+    """根据 DocumentProjectStructure 生成完整文档架构"""
+    engine = YYC3TemplateEngine(output_dir)
+    structure = DocumentProjectStructure.PROJECT_STRUCTURE
+    generated_files: List[str] = []
+    all_doc_list: List[Dict] = []
+
+    for section_key, section_data in structure.items():
+        section_dir = os.path.join(output_dir, section_key)
+        os.makedirs(section_dir, exist_ok=True)
+
+        doc_list = []
+
+        if "documents" in section_data:
+            for doc in section_data["documents"]:
+                doc_name = f"{section_key.split('-')[0]}-{doc['id']}-{doc['name']}.md"
+                doc_path = os.path.join(section_dir, doc_name)
+                meta = DocumentMetadata(
+                    file_name=doc_name,
+                    description=doc['desc'],
+                    tags=doc['tags'].replace('[', '').replace(']', '').split(',')
+                )
+                sections = {
+                    "概述": f"本节描述：{doc['desc']}",
+                    "详细内容": "> 待补充具体内容（由对应模块负责人完善）",
+                    "关联资源": f"- 标签: {doc['tags']}\n- 所属模块: {section_key}"
+                }
+                content = engine.generate_main_document(meta, sections)
+                engine.save_document(content, doc_path)
+                doc_list.append({"name": doc_name, "description": doc['desc'], "tags": doc['tags']})
+                all_doc_list.append({"name": os.path.join(section_key, doc_name), "description": doc['desc'], "tags": doc['tags']})
+                generated_files.append(doc_path)
+
+        if "subcategories" in section_data:
+            for sub_key, sub_data in section_data["subcategories"].items():
+                sub_dir = os.path.join(section_dir, sub_key)
+                os.makedirs(sub_dir, exist_ok=True)
+
+                sub_doc_list = []
+                for doc in sub_data.get("documents", []):
+                    doc_name = f"{sub_key}-{doc['id']}-{doc['name']}.md"
+                    doc_path = os.path.join(sub_dir, doc_name)
+                    meta = DocumentMetadata(
+                        file_name=doc_name,
+                        description=doc['desc'],
+                        tags=doc['tags'].replace('[', '').replace(']', '').split(',')
+                    )
+                    sections = {
+                        "概述": f"本节描述：{doc['desc']}",
+                        "详细内容": "> 待补充具体内容（由对应模块负责人完善）",
+                        "关联资源": f"- 标签: {doc['tags']}\n- 所属模块: {section_key} / {sub_key}"
+                    }
+                    content = engine.generate_main_document(meta, sections)
+                    engine.save_document(content, doc_path)
+                    sub_doc_list.append({"name": doc_name, "description": doc['desc'], "tags": doc['tags']})
+                    all_doc_list.append({"name": os.path.join(section_key, sub_key, doc_name), "description": doc['desc'], "tags": doc['tags']})
+                    generated_files.append(doc_path)
+
+                if sub_doc_list:
+                    readme_content = engine.generate_readme_document(f"{section_key} / {sub_key}", sub_doc_list)
+                    engine.save_document(readme_content, os.path.join(sub_dir, "README.md"))
+                    generated_files.append(os.path.join(sub_dir, "README.md"))
+
+        if doc_list:
+            readme_content = engine.generate_readme_document(section_key, doc_list)
+            engine.save_document(readme_content, os.path.join(section_dir, "README.md"))
+            generated_files.append(os.path.join(section_dir, "README.md"))
+
+    root_readme = engine.generate_readme_document("YYC³-QATS 文档架构", all_doc_list)
+    engine.save_document(root_readme, os.path.join(output_dir, "README.md"))
+    generated_files.append(os.path.join(output_dir, "README.md"))
+
+    return generated_files
+
+
 def main():
     parser = argparse.ArgumentParser(description='YYC³-QATS 文档模版引擎 - 金融量化交易系统专用')
     parser.add_argument('--output', '-o', default='docs', help='输出目录')
     parser.add_argument('--config', '-c', default='template_config.yaml', help='模版配置文件')
     parser.add_argument('--validate', '-v', action='store_true', help='验证模式')
     parser.add_argument('--export-registry', '-e', action='store_true', help='导出注册表')
+    parser.add_argument('--generate', '-g', action='store_true', help='生成文档架构')
     parser.add_argument('--project', '-p', default='YYC3-Financial-Quantitative-Trading-System', help='项目标识')
 
     args = parser.parse_args()
@@ -559,6 +635,11 @@ def main():
 
     if args.config and os.path.exists(args.config):
         engine.load_template_config(args.config)
+
+    if args.generate:
+        logger.info("🏗️ 开始生成文档架构...")
+        files = generate_docs_structure(args.output)
+        logger.info(f"✅ 已生成 {len(files)} 个文档文件")
 
     if args.export_registry:
         engine.export_registry(os.path.join(args.output, 'document_registry.json'))
