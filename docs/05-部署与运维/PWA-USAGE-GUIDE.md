@@ -1,7 +1,7 @@
 # YYC³-QATS PWA 完整使用指南
 
-> **版本**: v1.0.0 | **更新日期**: 2026-05-22  
-> **适用平台**: Chrome 90+, Edge 90+, Safari 15+, Firefox 90+ (桌面端 + 移动端)  
+> **版本**: v1.0.0 | **更新日期**: 2026-05-22
+> **适用平台**: Chrome 90+, Edge 90+, Safari 15+, Firefox 90+ (桌面端 + 移动端)
 > **状态**: Production Ready ✅
 
 ---
@@ -68,6 +68,7 @@
 #### 用户界面预览
 
 **Chrome/Edge 安装对话框：**
+
 ```
 ┌──────────────────────────────────────┐
 │                                      │
@@ -83,6 +84,7 @@
 ```
 
 **Safari iOS 安装对话框：**
+
 ```
 ┌──────────────────────────────────────┐
 │                                      │
@@ -106,7 +108,7 @@
 1. 打开应用网址 (https://your-domain.com)
 
 2. 点击地址栏右侧的安装图标
-   └─ 图标样式: 📥 或 ⬇️ 或 "+" 
+   └─ 图标样式: 📥 或 ⬇️ 或 "+"
 
 3. 或者通过菜单：
    └─ 菜单 (⋮) → "安装 YYC³-QATS"
@@ -268,7 +270,7 @@ https://your-domain.com/risk
    ├─ 离线指示器自动消失
    ├─ 数据开始实时刷新
    └─ Background Sync自动触发
-   
+
 3. 检查Console日志：
    [PWA] Back online, syncing data...
    [SW] Background sync completed
@@ -347,17 +349,17 @@ function NotificationSettings() {
   return (
     <div>
       <h3>推送通知设置</h3>
-      
+
       {!pushSupported && (
         <p>⚠️ 您的浏览器不支持推送通知</p>
       )}
-      
+
       {pushSupported && !pushEnabled && (
         <button onClick={enablePushNotifications}>
           🔔 启用推送通知
         </button>
       )}
-      
+
       {pushEnabled && (
         <button onClick={disablePushNotifications}>
           🔕 关闭推送通知
@@ -496,12 +498,12 @@ function TestNotification() {
 
 ```
 原因1: 已经安装过PWA
-解决: 
+解决:
   - 检查是否已在桌面/启动台找到应用图标
   - 已安装的应用不会再次显示Banner
 
 原因2: 之前关闭过Banner且未过7天
-解决: 
+解决:
   - 等待7天后再次访问
   - 或清除localStorage:
     localStorage.removeItem('yyc3-pwa-dismissed-at');
@@ -630,7 +632,7 @@ fetch('/manifest.json').then(r => r.json()).then(console.log);
 
 ```
 步骤1: 检查浏览器权限
-├─ Chrome: 
+├─ Chrome:
 │  └─ 地址栏左侧锁图标 → Site settings → Notifications
 │     └─ 选择 "Allow"
 ├─ Safari:
@@ -884,7 +886,7 @@ forceShowPWABanner(): void;
 ### 技术支持
 
 - **GitHub Issues**: [提交问题](https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System/issues)
-- **Email**: admin@0379.email
+- **Email**: <admin@0379.email>
 - **团队**: YanYuCloudCube Team
 
 ---
@@ -894,6 +896,7 @@ forceShowPWABanner(): void;
 ### v1.0.0 (2026-05-22)
 
 **新增功能**:
+
 - ✅ 完整PWA架构实现
 - ✅ Service Worker v2.0 (智能缓存策略)
 - ✅ Web App Manifest (10个图标 + 3快捷方式)
@@ -904,6 +907,7 @@ forceShowPWABanner(): void;
 - ✅ Background Sync准备
 
 **技术指标**:
+
 - Build时间: 6.46s
 - Bundle大小: ~394KB (Gzip)
 - 测试覆盖率: 86/86 (100%)
