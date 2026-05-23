@@ -226,7 +226,7 @@ export class GuardianSecurityService {
       threatScore += 0.3;
     }
 
-    const { sanitized: _sanitized, threats: inputThreats } = this.sanitizeInput(event.resource);
+    const { sanitized, threats: inputThreats } = this.sanitizeInput(event.resource);
     if (inputThreats.length > 0) {
       threats.push({
         type: 'injection_attempt',

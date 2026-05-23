@@ -319,7 +319,7 @@ export class GrandmasterQualityAuditor {
     if (code.includes('.filter(') && code.includes('.map(')) opportunities.push('建议合并 filter+map 为 reduce');
 
     return {
-      bundleSizeEstimate,
+      bundleSizeEstimate: bundleEstimate,
       estimatedLoadTime: bundleEstimate / 10000,
       renderComplexity: lines > 300 ? 'high' : lines > 100 ? 'medium' : 'low',
       memoryRiskLevel: code.includes('setInterval') && !code.includes('clearInterval') ? 'high' : 'low',
