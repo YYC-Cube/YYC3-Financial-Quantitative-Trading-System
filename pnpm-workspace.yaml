@@ -1,0 +1,30 @@
+# ============================================================================
+# YYC³-QATS — pnpm 工作区与依赖解析配置
+# ----------------------------------------------------------------------------
+# 说明（双声明，跨版本兼容）：
+#   - pnpm 10+ ：以本文件为准。pnpm 10 起配置统一在 pnpm-workspace.yaml 声明，
+#                package.json 的 "pnpm" 字段不再被读取。
+#   - pnpm 9   ：仅读取 package.json 的 "pnpm.overrides"，不解析本文件的 overrides。
+#                因此为兼容 CI（pnpm@9），overrides 在 package.json 中保留了一份
+#                完全相同的声明；两处需保持同步。
+#
+#   - vite: 6.4.3           固定构建工具版本
+#   - source-map-js: ^1.2.2 修复 Dependabot 高危 DoS 漏洞（受影响范围 <1.2.2）
+# ============================================================================
+# 单包项目：显式声明根目录为唯一成员（pnpm 9 要求 packages 字段非空）
+packages:
+  - "."
+
+overrides:
+  vite: 6.4.3
+  source-map-js: ^1.2.2
+
+# 允许执行安装脚本的依赖（pnpm 10+ 安全策略：未列出的包默认禁止运行构建脚本）
+# esbuild / @tailwindcss/oxide 需要原生二进制 postinstall，缺省会导致构建产物损坏
+# 版本差异：pnpm 10 读取 onlyBuiltDependencies；pnpm 11/12 仅读取 allowBuilds —— 两处同步声明
+onlyBuiltDependencies:
+  - esbuild
+  - "@tailwindcss/oxide"
+allowBuilds:
+  esbuild: true
+  "@tailwindcss/oxide": true
