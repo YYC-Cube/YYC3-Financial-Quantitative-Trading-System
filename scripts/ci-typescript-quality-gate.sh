@@ -49,10 +49,10 @@ TEST_ERRORS=${TEST_ERRORS:-0}
 if [ "${TEST_ERRORS}" -gt 0 ]; then
     echo "⚠️  Test code has ${TEST_ERRORS} type errors (non-blocking)"
     npx tsc --project tsconfig.test.json --noEmit 2>&1 | head -30 >> "${LOG_FILE}"
-    TEST_STATUS="WARN"
+    TEST_TYPE_STATUS="WARN"
 else
     echo "✅ Test code type check passed"
-    TEST_STATUS="PASS"
+    TEST_TYPE_STATUS="PASS"
 fi
 
 # 3. ESLint检查（分层规则）
@@ -91,11 +91,14 @@ echo "-------------------------------------------------"
 VITEST_JSON="${REPORT_DIR}/vitest-result_${TIMESTAMP}.json"
 COVERAGE_SUMMARY="coverage/coverage-summary.json"
 
+VITEST_LOG="${REPORT_DIR}/vitest_${TIMESTAMP}.log"
+
 # 单次运行：json 报告器写入文件（避免 stdout 干扰），同时生成覆盖率 json-summary
+# 输出保留到日志，便于 CI 失败时定位（如 Node 版本不满足要求导致未执行任何用例）
 npx vitest run \
     --reporter=json --outputFile="${VITEST_JSON}" \
     --coverage --coverage.reporter=json-summary --coverage.reporter=text \
-    >/dev/null 2>&1 || true
+    >"${VITEST_LOG}" 2>&1 || true
 
 TESTS_PASSED=$(python3 -c "
 import json
@@ -152,7 +155,7 @@ cat > ${REPORT_FILE} << EOF
       "errors": ${PRODUCTION_ERRORS}
     },
     "test_type_check": {
-      "status": "${TEST_STATUS}",
+      "status": "${TEST_TYPE_STATUS}",
       "errors": ${TEST_ERRORS}
     },
     "eslint": {
@@ -191,7 +194,7 @@ echo "========================================"
 OVERALL="$([ "${PRODUCTION_STATUS}" = "PASS" ] && [ "${ESLINT_STATUS}" = "PASS" ] && [ "${TEST_STATUS}" = "PASS" ] && echo "✅ SUCCESS" || echo "❌ FAILURE")"
 
 echo "Production Type Check: ${PRODUCTION_STATUS} (${PRODUCTION_ERRORS} errors)"
-echo "Test Type Check:       ${TEST_STATUS} (${TEST_ERRORS} errors)"
+echo "Test Type Check:       ${TEST_TYPE_STATUS} (${TEST_ERRORS} errors)"
 echo "ESLint Check:          ${ESLINT_STATUS} (${ESLINT_ERRORS} errors)"
 echo "Test Execution:        ${TEST_STATUS} (${TESTS_PASSED}/${TESTS_FAILED})"
 echo "Coverage:              ${COVERAGE_STATUS} (${STATEMENTS_COVERAGE:-0}%)"
