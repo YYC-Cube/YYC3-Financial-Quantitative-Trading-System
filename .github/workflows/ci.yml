@@ -36,15 +36,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: TypeScript Check
-        run: pnpm run typecheck
-
-      - name: ESLint Check
-        run: pnpm run lint
-        continue-on-error: true
-
-      - name: Unit Tests
-        run: pnpm run test
+      - name: Quality Gate (TypeScript + ESLint + Tests + Coverage)
+        run: bash scripts/ci-typescript-quality-gate.sh
 
       - name: Build
         run: pnpm run build
