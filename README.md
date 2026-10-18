@@ -23,13 +23,14 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-1.1.0-blue.svg?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/version-2.3.1-blue.svg?style=flat-square" alt="Version" />
   <img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License" />
   <img src="https://img.shields.io/badge/React-18.3.1-61DAFB.svg?style=flat-square&logo=react" alt="React" />
   <img src="https://img.shields.io/badge/TypeScript-Strict-3178C6.svg?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Vite-6.3.5-646CFF.svg?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/Tests-613%20Passing-brightgreen.svg?style=flat-square" alt="Tests" />
-  <img src="https://img.shields.io/badge/Coverage-13.66%25-yellowgreen.svg?style=flat-square" alt="Coverage" />
+  <img src="https://img.shields.io/badge/Vite-6.4.3-646CFF.svg?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Vitest-5.0.3-6DA55F.svg?style=flat-square&logo=vitest&logoColor=white" alt="Vitest" />
+  <img src="https://img.shields.io/badge/Tests-862%20Passing-brightgreen.svg?style=flat-square" alt="Tests" />
+  <img src="https://img.shields.io/badge/Coverage-21%25-yellowgreen.svg?style=flat-square" alt="Coverage" />
   <img src="https://img.shields.io/badge/PWA-Custom-FF6B6B.svg?style=flat-square" alt="PWA" />
   <a href="https://trading.yyc3.vip">
     <img src="https://img.shields.io/badge/Deploy-trading.yyc3.vip-071425.svg?style=flat-square&logo=github-pages&logoColor=white" alt="Deployment" />
@@ -45,7 +46,7 @@
 ### 核心定位
 
 | 维度 | 描述 |
-|------|------|
+| ------ | ------ |
 | **目标用户** | 专业量化交易者 / 机构投资者 / 算法交易团队 |
 | **应用形态** | SPA + PWA (响应式桌面端 + 移动端) |
 | **视觉主题** | 深空蓝 #071425 (Deep Space Blue) |
@@ -69,7 +70,7 @@
 ### 五高架构 (5-High Architecture)
 
 | 高度 | 实现方式 | 关键指标 |
-|------|----------|----------|
+| ------ | ---------- | ---------- |
 | **🟢 高可用** | ErrorBoundary + Service Worker 离线降级 | 99.9% 可用性目标 |
 | **🔵 高性能** | React.lazy + Suspense 懒加载 + Vite 构建优化 | 首屏 < 2s |
 | **🔴 高安全** | CSP 安全策略 + 后量子加密 PQC | OWASP Top 10 合规 |
@@ -89,7 +90,7 @@
 ### 八大业务模块
 
 | 模块 | 子模块数 | 核心功能 |
-|------|----------|----------|
+| ------ | ---------- | ---------- |
 | **📊 市场数据** | 5 | 实时行情 / 历史数据 / 智能洞察 / 自主看板 / 数据收藏 |
 | **🧠 智能策略** | 5 | 策略编辑 / 智能回测 / 策略优化 / 模拟交易 / 策略管理 |
 | **⚠️ 风险管控** | 6 | 量子风险 / 大数据风控 / 实时风控 / 风险预警 / 对冲工具 |
@@ -104,7 +105,7 @@
 ## 🛠️ 技术栈
 
 | 层级 | 技术 | 版本 | 用途 |
-|------|------|------|------|
+| ------ | ------ | ------ | ------ |
 | **框架** | React | 18.3.1 | UI 渲染引擎 |
 | **语言** | TypeScript | Strict (ES2020) | 类型安全开发 |
 | **构建** | Vite | 6.3.5 | 开发服务器 + 生产构建 |
@@ -269,7 +270,7 @@ pnpm dev
 # 构建生产版本
 pnpm build
 
-# 运行测试套件 (37 suites, 613 tests, 13.66% coverage)
+# 运行测试套件 (45 suites, 862 tests, 21.16% coverage)
 pnpm test
 
 # 运行完整质量门禁 (TypeScript + ESLint + Tests + Coverage)
@@ -288,7 +289,7 @@ pnpm vitest run src/app/utils/code-quality-auditor.test.ts
 ### 访问地址
 
 | 环境 | URL | 说明 |
-|------|-----|------|
+| ------ | ----- | ------ |
 | **本地开发** | <http://localhost:3188> | Vite Dev Server |
 | **生产环境** | <https://trading.yyc3.vip> | GitHub Pages |
 | **GitHub Pages** | <https://yyc-cube.github.io/>... | 备用域名 |
@@ -300,7 +301,7 @@ pnpm vitest run src/app/utils/code-quality-auditor.test.ts
 YYC³ 采用**五维评估体系**驱动**五高架构**实现**五标五化**：
 
 | 维度 | 评估维度 | 优化方向 |
-|------|----------|----------|
+| ------ | ---------- | ---------- |
 | **⏱️ 时间维** | 开发效率 / 构建性能 / 加载速度 | CI/CD 自动化 + 懒加载优化 |
 | **📍 空间维** | 代码组织 / 组件架构 / 资源利用 | 模块化设计 + 手动分包 |
 | **🏷️ 属性维** | 性能 / 安全性 / 可维护性 | TypeScript Strict + CSP |
@@ -322,7 +323,7 @@ YYC³ 采用**五维评估体系**驱动**五高架构**实现**五标五化**�
 ### 代码规模
 
 | 指标 | 数值 |
-|------|------|
+| ------ | ------ |
 | 源文件总数 | ~161 (.ts/.tsx) |
 | 业务模块 | 8 个 |
 | 二级子菜单 | 45 个 |
@@ -338,18 +339,18 @@ YYC³ 采用**五维评估体系**驱动**五高架构**实现**五标五化**�
 ### 测试覆盖
 
 | 套件 | 测试数 | 覆盖率 | 状态 |
-|------|--------|--------|------|
+| ------ | -------- | -------- | ------ |
 | **Service Layer** | 180+ | 25%+ | ✅ Passing |
 | **Component Tests** | 150+ | 15%+ | ✅ Passing |
 | **Utility Tests** | 100+ | 30%+ | ✅ Passing |
 | **Integration Tests** | 183+ | 10%+ | ✅ Passing |
 | **Quality Audit** | 6 | - | ✅ Passing |
-| **总计** | **613** | **13.66%** | **✅ All Passing** |
+| **总计** | **862** | **21.16%** | **✅ 45 Suites Passing** |
 
 ### 质量指标
 
 | 指标 | Phase5前 | 当前 (v1.1.0) | 提升 |
-|------|---------|--------------|------|
+| ------ | --------- | -------------- | ------ |
 | **测试文件数** | 6 | 37 | +517% |
 | **测试用例数** | 48 | 613 | +1177% |
 | **语句覆盖率** | ~5% | 13.66% | +173% |
@@ -391,7 +392,7 @@ X-Frame-Options: SAMEORIGIN
 ## 📱 PWA 支持
 
 | 特性 | 实现 |
-|------|------|
+| ------ | ------ |
 | **动态 Manifest** | JavaScript 运行时注入 `injectPWAManifest()` |
 | **Service Worker** | Stale-While-Revalidate (静态) + Network-First (API) |
 | **推送通知** | critical 告警 → SW → `showNotification()` |
@@ -411,9 +412,21 @@ X-Frame-Options: SAMEORIGIN
 4. 推送到分支 (`git push origin feature/amazing-feature`)
 5. 创建 **Pull Request**
 
+### 治理与社区文件
+
+| 文件 | 说明 |
+| ------ | ------ |
+| 💜 [LICENSE](LICENSE) | MIT 许可证 |
+| 🤝 [CONTRIBUTING.md](CONTRIBUTING.md) | 贡献流程与代码规范 |
+| 📜 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | 贡献者行为准则 |
+| 🔐 [SECURITY.md](SECURITY.md) | 安全政策与漏洞上报 |
+| 📖 [DEVELOPMENT.md](DEVELOPMENT.md) | 开发环境与最佳实践 |
+| 🧪 [TESTING.md](TESTING.md) | 测试策略与质量门禁 |
+| 📝 [CHANGELOG.md](CHANGELOG.md) | 版本变更记录 |
+
 ### 开发规范
 
-请严格遵守 [YYC³ 团队统一开发标准](docs/1001-团队规范-001-开发标准.md)：
+请严格遵守 [YYC³ 团队统一开发标准](docs/YYC3-团队通用-标准规范/YYC3-团队规范-开发标准.md)：
 
 - ✅ YAML Front Matter 元数据
 - ✅ TypeScript Strict 模式
@@ -426,15 +439,19 @@ X-Frame-Options: SAMEORIGIN
 ## 📚 文档索引
 
 | 文档 | 路径 | 描述 |
-|------|------|------|
-| **开发标准** | [docs/1001-团队规范-001-开发标准.md](docs/1001-团队规范-001-开发标准.md) | YYC³ 团队统一开发标准 |
-| **TypeScript 审计** | [docs/TypeScript-Audit-Report.md](docs/TypeScript-Audit-Report.md) | 161 文件全局类型检测 |
-| **核心测试用例** | [docs/Core-Test-Cases.md](docs/Core-Test-Cases.md) | 56 个测试用例全覆盖 |
-| **功能 API 文档** | [docs/Functional-API-Documentation.md](docs/Functional-API-Documentation.md) | Context API / 组件接口 |
-| **拓展规划** | [docs/Expansion-Roadmap.md](docs/Expansion-Roadmap.md) | 6 阶段路线图 + 里程碑 |
-| **贡献指南** | [CONTRIBUTING.md](CONTRIBUTING.md) | 贡献流程与代码规范 (新增) |
-| **开发手册** | [DEVELOPMENT.md](DEVELOPMENT.md) | 开发环境与最佳实践 (新增) |
-| **测试指南** | [TESTING.md](TESTING.md) | 测试策略与质量门禁 (新增) |
+| ------ | ------ | ------ |
+| **文档总索引** | [docs/README.md](docs/README.md) | 文档架构导航（38 篇核心文档索引） |
+| **项目总览手册** | [docs/00-项目总览索引/00-001-项目总览手册.md](docs/00-项目总览索引/00-001-项目总览手册.md) | 八大业务模块 + 技术栈立项依据 |
+| **系统架构总览** | [docs/01-架构设计与技术栈/0101-整体架构/0101-整体架构-001-系统架构总览图.md](docs/01-架构设计与技术栈/0101-整体架构/0101-整体架构-001-系统架构总览图.md) | 系统全景架构图 |
+| **AI Family 架构** | [docs/02-AI-Family智能引擎/AI-FAMILY-ARCHITECTURE.md](docs/02-AI-Family智能引擎/AI-FAMILY-ARCHITECTURE.md) | 8 大 AI 成员协同架构 |
+| **功能 API 文档** | [docs/01-架构设计与技术栈/Functional-API-Documentation.md](docs/01-架构设计与技术栈/Functional-API-Documentation.md) | Context API / 组件接口 |
+| **TypeScript 审计** | [docs/04-测试与质量保障/TypeScript-Audit-Report.md](docs/04-测试与质量保障/TypeScript-Audit-Report.md) | 全局类型检测报告 |
+| **核心测试用例** | [docs/04-测试与质量保障/Core-Test-Cases.md](docs/04-测试与质量保障/Core-Test-Cases.md) | 核心测试用例全覆盖 |
+| **拓展规划** | [docs/00-项目总览索引/Expansion-Roadmap.md](docs/00-项目总览索引/Expansion-Roadmap.md) | 分阶段路线图 + 里程碑 |
+| **团队规范** | [docs/YYC3-团队通用-标准规范/YYC3-团队规范-开发标准.md](docs/YYC3-团队通用-标准规范/YYC3-团队规范-开发标准.md) | YYC³ 团队统一开发标准 |
+| **贡献指南** | [CONTRIBUTING.md](CONTRIBUTING.md) | 贡献流程与代码规范 |
+| **开发手册** | [DEVELOPMENT.md](DEVELOPMENT.md) | 开发环境与最佳实践 |
+| **测试指南** | [TESTING.md](TESTING.md) | 测试策略与质量门禁 |
 
 ---
 
@@ -482,7 +499,7 @@ X-Frame-Options: SAMEORIGIN
 #### 核心指标提升
 
 | 指标 | v1.0.0 | v1.1.0 | 提升 |
-|------|--------|--------|------|
+| ------ | -------- | -------- | ------ |
 | **测试文件** | 6 | 37 | +517% |
 | **测试用例** | 48 | 613 | +1177% |
 | **覆盖率** | ~5% | 13.66% | +173% |

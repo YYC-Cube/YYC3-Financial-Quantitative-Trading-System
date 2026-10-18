@@ -24,7 +24,9 @@ echo ""
 echo "📋 Step 1: Production Code Type Check (Strict)"
 echo "----------------------------------------------"
 
-PRODUCTION_ERRORS=$(npx tsc --noEmit --pretty false 2>&1 | grep -c "error TS" || echo "0")
+PRODUCTION_TS_OUT=$( { npx tsc --noEmit --pretty false 2>&1 || true; } )
+PRODUCTION_ERRORS=$(printf '%s' "${PRODUCTION_TS_OUT}" | grep -c "error TS" || true)
+PRODUCTION_ERRORS=${PRODUCTION_ERRORS:-0}
 
 if [ "${PRODUCTION_ERRORS}" -gt 0 ]; then
     echo "❌ Production code has ${PRODUCTION_ERRORS} type errors"
@@ -40,7 +42,9 @@ echo ""
 echo "📋 Step 2: Test Code Type Check (Relaxed)"
 echo "-----------------------------------------"
 
-TEST_ERRORS=$(npx tsc --project tsconfig.test.json --noEmit --pretty false 2>&1 | grep -c "error TS" || echo "0")
+TEST_TS_OUT=$( { npx tsc --project tsconfig.test.json --noEmit --pretty false 2>&1 || true; } )
+TEST_ERRORS=$(printf '%s' "${TEST_TS_OUT}" | grep -c "error TS" || true)
+TEST_ERRORS=${TEST_ERRORS:-0}
 
 if [ "${TEST_ERRORS}" -gt 0 ]; then
     echo "⚠️  Test code has ${TEST_ERRORS} type errors (non-blocking)"
@@ -79,54 +83,58 @@ else
     ESLINT_STATUS="PASS"
 fi
 
-# 4. 测试执行验证
+# 4 & 5. 测试执行 + 覆盖率检查（单次运行，同时产出结构化结果）
 echo ""
-echo "📋 Step 4: Test Execution Verification"
-echo "--------------------------------------"
+echo "📋 Step 4: Test Execution & Coverage Verification"
+echo "-------------------------------------------------"
 
-TEST_OUTPUT=$(pnpm vitest run --reporter=json 2>/dev/null || echo '{}')
-TESTS_PASSED=$(echo "${TEST_OUTPUT}" | python3 -c "
-import json, sys
-try:
-    data = json.load(sys.stdin)
-    if isinstance(data, dict) and 'numPassedTests' in data:
-        print(data['numPassedTests'])
-    else:
-        print(0)
-except:
-    print(0)
-" || echo "0")
-TESTS_FAILED=$(echo "${TEST_OUTPUT}" | python3 -c "
-import json, sys
-try:
-    data = json.load(sys.stdin)
-    if isinstance(data, dict) and 'numFailedTests' in data:
-        print(data['numFailedTests'])
-    else:
-        print(0)
-except:
-    print(0)
-" || echo "0")
+VITEST_JSON="${REPORT_DIR}/vitest-result_${TIMESTAMP}.json"
+COVERAGE_SUMMARY="coverage/coverage-summary.json"
 
-if [ "${TESTS_FAILED}" -gt 0 ]; then
-    echo "❌ ${TESTS_FAILED} tests failed (${TESTS_PASSED} passed)"
+# 单次运行：json 报告器写入文件（避免 stdout 干扰），同时生成覆盖率 json-summary
+npx vitest run \
+    --reporter=json --outputFile="${VITEST_JSON}" \
+    --coverage --coverage.reporter=json-summary --coverage.reporter=text \
+    >/dev/null 2>&1 || true
+
+TESTS_PASSED=$(python3 -c "
+import json
+try:
+    print(json.load(open('${VITEST_JSON}')).get('numPassedTests', 0))
+except Exception:
+    print(0)
+" 2>/dev/null || echo 0)
+TESTS_FAILED=$(python3 -c "
+import json
+try:
+    print(json.load(open('${VITEST_JSON}')).get('numFailedTests', 0))
+except Exception:
+    print(0)
+" 2>/dev/null || echo 0)
+TESTS_PASSED=${TESTS_PASSED:-0}
+TESTS_FAILED=${TESTS_FAILED:-0}
+
+if [ "${TESTS_FAILED}" -gt 0 ] || [ "${TESTS_PASSED}" -eq 0 ]; then
+    echo "❌ Tests failed or not detected (passed=${TESTS_PASSED}, failed=${TESTS_FAILED})"
     TEST_STATUS="FAIL"
 else
     echo "✅ All ${TESTS_PASSED} tests passed"
     TEST_STATUS="PASS"
 fi
 
-# 5. 覆盖率检查
-echo ""
-echo "📋 Step 5: Coverage Threshold Check"
-echo "-----------------------------------"
+# 覆盖率（读取 json-summary 的 statements 百分比）
+STATEMENTS_COVERAGE=$(python3 -c "
+import json
+try:
+    print(json.load(open('${COVERAGE_SUMMARY}'))['total']['statements']['pct'])
+except Exception:
+    print(0)
+" 2>/dev/null || echo 0)
+STATEMENTS_COVERAGE=${STATEMENTS_COVERAGE:-0}
 
-COVERAGE_DATA=$(pnpm vitest run --coverage 2>&1 | grep -A 10 "Coverage summary" || echo "")
-STATEMENTS_COVERAGE=$(echo "${COVERAGE_DATA}" | grep "Statements" | awk '{print $2}' | tr -d '%' || echo "0")
+COVERAGE_MIN=20.0
 
-COVERAGE_MIN=12.0
-
-if (( $(echo "${STATEMENTS_COVERAGE} >= ${COVERAGE_MIN}" | bc -l) )); then
+if awk "BEGIN{exit !(${STATEMENTS_COVERAGE} >= ${COVERAGE_MIN})}"; then
     echo "✅ Coverage ${STATEMENTS_COVERAGE}% >= ${COVERAGE_MIN}% threshold"
     COVERAGE_STATUS="PASS"
 else

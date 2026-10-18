@@ -37,11 +37,11 @@
 ### 当前项目分布
 
 | 类型 | 文件数 | 测试数 | 占比 | 覆盖率 |
-|------|--------|--------|------|--------|
+| ------ | -------- | -------- | ------ | -------- |
 | **Unit Tests** | ~20 | ~400 | 65% | 15-30% |
 | **Integration Tests** | ~12 | ~180 | 29% | 8-15% |
 | **Component Tests** | ~5 | ~33 | 6% | 10-20% |
-| **总计** | **37** | **613** | **100%** | **13.66%** |
+| **总计** | **45** | **862** | **100%** | **21.16%** |
 
 ---
 
@@ -134,7 +134,7 @@ describe('Market Data Integration', () => {
     const priceDiff = Math.abs(
       binanceData.price - coingeckoData[0].current_price
     ) / coingeckoData[0].current_price;
-    
+
     expect(priceDiff).toBeLessThan(0.01); // 差异<1%
   });
 });
@@ -193,7 +193,7 @@ describe('ErrorBoundary', () => {
 ### 核心技术栈
 
 | 工具 | 版本 | 用途 |
-|------|------|------|
+| ------ | ------ | ------ |
 | **Vitest** | latest | 测试运行器 |
 | **@testing-library/react** | ^14.x | React组件测试 |
 | **jsdom** | latest | DOM环境模拟 |
@@ -269,10 +269,10 @@ it('should calculate risk score based on volatility', () => {
     volatility: 0.3, // 高波动性
     timeframe: '1d'
   };
-  
+
   // Act (执行)
   const result = calculateRisk(input);
-  
+
   // Assert (断言)
   expect(result.riskScore).toBeGreaterThan(7); // 高风险
   expect(result.riskLevel).toBe('HIGH');
@@ -295,9 +295,9 @@ vi.mock('../services/api', () => ({
 
 it('should call API with correct parameters', async () => {
   api.get.mockResolvedValueOnce({ data: { price: 50000 } });
-  
+
   await fetchBitcoinPrice();
-  
+
   expect(api.get).toHaveBeenCalledWith('/api/bitcoin/price');
 });
 ```
@@ -329,7 +329,7 @@ afterEach(() => {
 // Promise方式
 it('should fetch data asynchronously', async () => {
   const result = await fetchData('/api/data');
-  
+
   expect(result).toBeDefined();
 });
 
@@ -345,20 +345,20 @@ it('should handle callbacks', (done) => {
 // Timer Mocking
 it('should debounce user input', () => {
   vi.useFakeTimers();
-  
+
   const handler = vi.fn();
   const debounced = debounce(handler, 300);
-  
+
   debounced('input1');
   debounced('input2'); // 快速连续输入
-  
+
   expect(handler).not.toHaveBeenCalled();
-  
+
   vi.advanceTimersByTime(300);
-  
+
   expect(handler).toHaveBeenCalledTimes(1);
   expect(handler).toHaveBeenCalledWith('input2');
-  
+
   vi.useRealTimers();
 });
 ```
@@ -367,21 +367,21 @@ it('should debounce user input', () => {
 
 ## 🎯 覆盖率目标
 
-### 当前状态 (v1.1.0)
+### 当前状态 (main)
 
 | 指标 | 当前值 | 目标值 | 状态 |
-|------|--------|--------|------|
-| **Statements** | 13.66% | 20%+ | ⏳ 进行中 |
-| **Branches** | 12.36% | 18%+ | ⏳ 进行中 |
-| **Functions** | 9.25% | 15%+ | ⏳ 进行中 |
-| **Lines** | 14.02% | 20%+ | ⏳ 进行中 |
+| ------ | -------- | -------- | ------ |
+| **Statements** | 21.16% | 30%+ | ⏳ 进行中 |
+| **Branches** | 20.27% | 28%+ | ⏳ 进行中 |
+| **Functions** | 16.77% | 25%+ | ⏳ 进行中 |
+| **Lines** | 21.43% | 30%+ | ⏳ 进行中 |
 
 ### 优先覆盖模块
 
 按业务重要性排序：
 
 | 优先级 | 模块 | 当前覆盖 | 目标 | 原因 |
-|--------|------|----------|------|------|
+| -------- | ------ | ---------- | ------ | ------ |
 | **P0** | Services (12个) | 25%+ | 40%+ | 核心业务逻辑 |
 | **P0** | Utils (工具函数) | 30%+ | 50%+ | 高复用性 |
 | **P1** | Components (关键) | 15%+ | 30%+ | 用户交互 |
@@ -420,7 +420,7 @@ pnpm vitest run --coverage src/app/services/BinanceService.test.ts
 │ Check    │ Check    │          │          │             │
 ├──────────┼──────────┼──────────┼──────────┼─────────────┤
 │ 🔴Block  │ 🟡Warn   │ 🔴Block  │ 🔴Block  │ 🟡Warn      │
-│ Strict   │ Relaxed  │ Layered  │ 613 Pass │ ≥12%        │
+│ Strict   │ Relaxed  │ Layered  │ 862 Pass │ ≥20%        │
 └──────────┴──────────┴──────────┴──────────┴─────────────┘
 ```
 
@@ -432,10 +432,10 @@ pnpm vitest run --coverage src/app/services/BinanceService.test.ts
 
 # 输出示例:
 # ✅ Production Type Check: PASS (0 errors)
-# ✅ Test Type Check: PASS (0 errors)  
+# ✅ Test Type Check: PASS (0 errors)
 # ✅ ESLint Check: PASS (0 errors)
-# ✅ Test Execution: PASS (613/0)
-# ✅ Coverage: PASS (13.66% ≥ 12%)
+# ✅ Test Execution: PASS (862/0)
+# ✅ Coverage: PASS (21.16% ≥ 20%)
 #
 # Overall: ✅ SUCCESS
 ```
@@ -451,21 +451,21 @@ on: [push, pull_request]
 jobs:
   quality:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      
+
       - name: Install dependencies
         run: pnpm install
-      
+
       - name: Run quality gate
         run: ./scripts/ci-typescript-quality-gate.sh
-      
+
       - name: Upload coverage report
         if: always()
         uses: actions/upload-artifact@v3
@@ -481,7 +481,7 @@ jobs:
 ### 执行时间基线
 
 | 场景 | 基线时间 | 当前时间 | 状态 |
-|------|----------|----------|------|
+| ------ | ---------- | ---------- | ------ |
 | **全量测试** | < 4.0s | 3.41s | ✅ 优秀 |
 | **TypeCheck** | < 10s | ~8s | ✅ 通过 |
 | **ESLint** | < 15s | ~12s | ✅ 通过 |
@@ -503,19 +503,22 @@ jobs:
 ### Q: `global is not defined` 错误？
 
 **A**: 已通过 `src/vitest.d.ts` 解决，确保vitest.config.ts包含：
+
 ```javascript
 setupFiles: ['./src/vitest.d.ts']
 ```
 
 ### Q: 如何处理`as any`类型断言？
 
-**A**: 
+**A**:
+
 - 生产代码：避免使用，使用类型守卫或明确接口
 - 测试代码：允许但控制数量（当前12处）
 
 ### Q: 测试太慢怎么办？
 
 **优化建议**:
+
 1. 使用 `vi.mock()` 替代真实API调用
 2. 并行运行独立测试 (`--threads`)
 3. 使用 `vi.useFakeTimers()` 加速定时器测试

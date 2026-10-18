@@ -68,7 +68,7 @@ pnpm install
 git checkout -b feature/amazing-feature      # 新功能
 git checkout -b fix/fix-bug-description       # Bug修复
 git checkout -b docs/update-readme            # 文档更新
-git checkout -chore/refactor-module-name      # 重构/优化
+git checkout -b chore/refactor-module-name      # 重构/优化
 ```
 
 ---
@@ -120,7 +120,7 @@ main (生产分支)
 #### Type 类型
 
 | 类型 | 描述 | 示例 |
-|------|------|------|
+| ------ | ------ | ------ |
 | `feat` | 新功能 | `feat(market): add real-time price chart` |
 | `fix` | Bug修复 | `fix(strategy): correct backtest calculation` |
 | `docs` | 文档更新 | `docs(readme): update installation guide` |
@@ -187,7 +187,7 @@ const result = someFunction() as any; // 仅在测试文件中允许
 #### 命名约定
 
 | 类型 | 约定 | 示例 |
-|------|------|------|
+| ------ | ------ | ------ |
 | **接口** | PascalCase + I前缀 | `IUserService`, `IMarketData` |
 | **类型** | PascalCase | `UserType`, `MarketConfig` |
 | **组件** | PascalCase | `KLineChart`, `ErrorBoundary` |
@@ -236,11 +236,11 @@ export default function MarketPage() {
 // ✅ 自定义Hook命名以use开头
 function useUserData(userId: string) {
   const [user, setUser] = useState<User | null>(null);
-  
+
   useEffect(() => {
     fetchUser(userId).then(setUser);
   }, [userId]);
-  
+
   return user;
 }
 ```
@@ -279,7 +279,7 @@ import { calculateRisk } from './risk-calculator';
 describe('calculateRisk', () => {
   it('should calculate risk correctly for valid input', () => {
     const result = calculateRisk({ amount: 1000, volatility: 0.2 });
-    
+
     expect(result.riskScore).toBeGreaterThan(0);
     expect(result.riskLevel).toBeDefined();
   });
@@ -303,13 +303,13 @@ describe('ErrorBoundary', () => {
     const ThrowError = () => {
       throw new Error('Test error');
     };
-    
+
     render(
       <ErrorBoundary fallback={<div>Error occurred</div>}>
         <ThrowError />
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByText('Error occurred')).toBeInTheDocument();
   });
 });
@@ -318,10 +318,10 @@ describe('ErrorBoundary', () => {
 ### 覆盖率目标
 
 | 指标 | 当前 | 目标 | 说明 |
-|------|------|------|------|
-| **语句覆盖率** | 13.66% | 20%+ | 持续提升中 |
-| **分支覆盖率** | 12.36% | 18%+ | 条件判断覆盖 |
-| **函数覆盖率** | 9.25% | 15%+ | 公共函数优先 |
+| ------ | ------ | ------ | ------ |
+| **语句覆盖率** | 21.16% | 30%+ | 持续提升中 |
+| **分支覆盖率** | 20.27% | 28%+ | 条件判断覆盖 |
+| **函数覆盖率** | 16.77% | 25%+ | 公共函数优先 |
 
 ### 测试文件位置
 
@@ -394,12 +394,14 @@ Closes #123
 ### Q: 如何处理TypeScript strict模式报错？
 
 **A:** 项目区分生产和测试配置：
+
 - 生产代码：严格模式，必须明确类型
 - 测试代码：宽松模式，允许灵活性
 
 ### Q: 可以使用`as any`吗？
 
-**A:** 
+**A:**
+
 - 生产代码：尽量避免，使用类型断言或类型守卫
 - 测试文件：允许但需控制数量（当前目标<12处）
 
@@ -424,7 +426,7 @@ pnpm vitest watch src/app/services/BinanceService.test.ts
 
 - **Issues**: [GitHub Issues](https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System/discussions)
-- **Email**: admin@0379.email
+- **Email**: <admin@0379.email>
 
 ---
 

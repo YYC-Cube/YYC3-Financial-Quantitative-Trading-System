@@ -9,8 +9,24 @@
 
 ## [Unreleased]
 
+### ✅ 已完成
+
+#### 修复 (Fixed)
+- 修复 `vitest@5` 与 `@vitest/coverage-v8@4.1.7` 版本错配导致覆盖率报告崩溃（统一至 `5.0.3`）
+- 修复 `@testing-library/jest-dom` 断言类型缺失导致 `pnpm typecheck` 全量报错（`src/vitest.d.ts` 引入 `jest-dom/vitest`）
+- 修复 CI 质量门禁脚本 `scripts/ci-typescript-quality-gate.sh` 与 vitest 5 输出格式不兼容，导致用例数/覆盖率解析归零的问题
+
+#### 变更 (Changed)
+- `package.json` 版本号由占位值 `0.1.0` 校正为 `2.3.1`
+- 文档徽章、测试与覆盖率数据对齐实测值（45 套件 / 862 用例 / 21.16% 覆盖率）
+- CI 覆盖率阈值由 12% 提升并统一为 20%
+
+#### 新增 (Added)
+- 治理文件：`LICENSE` (MIT)、`CODE_OF_CONDUCT.md`、`SECURITY.md`
+- `.github` 社区健康文件：PR 模板、Bug/Feature Issue 模板、`dependabot.yml`（按生态分组，避免 vitest/coverage 再次错配）
+
 ### 计划中
-- [ ] 覆盖率提升至20%+
+- [x] 覆盖率提升至20%+（当前 21.16%）
 - [ ] 新增E2E测试场景
 - [ ] 性能优化：首屏加载<2s
 

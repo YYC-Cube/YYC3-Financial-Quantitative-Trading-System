@@ -21,7 +21,7 @@
 ### 系统要求
 
 | 工具 | 最低版本 | 推荐版本 | 用途 |
-|------|----------|----------|------|
+| ------ | ---------- | ---------- | ------ |
 | **Node.js** | >= 18.x | >= 20.x LTS | 运行时环境 |
 | **pnpm** | >= 8.x | >= 9.x | 包管理器 |
 | **Git** | >= 2.x | 最新版 | 版本控制 |
@@ -82,10 +82,13 @@ YYC3-Financial-Quantitative-Trading-System/
 ├── public/                     # 静态资源
 ├── scripts/                    # CI/CD脚本
 ├── docs/                       # 项目文档
-├── tests/                      # 测试文件 (37个)
-├── coverage/                   # 测试覆盖率报告
-└── .baseline/                  # 性能基线数据
+├── src/app/**/*.test.{ts,tsx}  # 测试文件 (与源码同目录, 45个)
+├── coverage/                   # 测试覆盖率报告 (生成物)
+└── .performance-baseline.json  # 性能基线数据
 ```
+
+> 说明：测试文件与源码**同目录共存**（如 `src/app/services/BinanceService.test.ts`），
+> 而非独立的 `tests/` 目录；`coverage/`、`dist/` 为构建/测试生成物，不纳入版本控制。
 
 ### 文件命名约定
 
@@ -213,7 +216,7 @@ pnpm preview          # 预览生产构建
 # 质量检查
 pnpm typecheck        # TypeScript类型检查
 pnpm lint             # ESLint检查
-pnpm lint:fix         # 自动修复ESLint问题
+npx eslint . --fix    # 自动修复ESLint问题
 pnpm test             # 运行所有测试
 pnpm test:watch       # 监听模式运行测试
 pnpm test:coverage    # 运行测试并生成覆盖率报告
@@ -229,7 +232,7 @@ pnpm vitest run src/app/utils/code-quality-auditor.test.ts
 ### VS Code快捷键
 
 | 操作 | macOS | Windows/Linux |
-|------|-------|---------------|
+| ------ | ------- | --------------- |
 | **格式化文档** | `Shift + Option + F` | `Shift + Alt + F` |
 | **快速修复** | `Cmd + .` | `Ctrl + .` |
 | **转到定义** | `F12` / `Cmd + Click` | `F12` / `Ctrl + Click` |
@@ -327,7 +330,7 @@ function useMarketData(symbol: string) {
     }
 
     fetch();
-    
+
     return () => { isMounted = false; }; // 清理函数
   }, [symbol]);
 
@@ -346,7 +349,7 @@ export default function StrategyPage() {
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
             <h2 className="text-xl font-bold text-red-500">策略加载失败</h2>
-            <button 
+            <button
               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
               onClick={() => window.location.reload()}
             >
@@ -479,10 +482,10 @@ pnpm vitest run --inspect-brk src/app/services/BinanceService.test.ts
 ## 📊 当前项目指标
 
 | 指标 | 数值 | 说明 |
-|------|------|------|
+| ------ | ------ | ------ |
 | **源文件总数** | ~208 (.ts/.tsx) | 包含测试文件 |
-| **测试文件数** | 37 | 覆盖率13.66% |
-| **测试用例数** | 613 | 全部通过 |
+| **测试文件数** | 45 | 覆盖率21.16% |
+| **测试用例数** | 862 | 全部通过 |
 | **执行时间** | 3.41s | 目标<3.5s |
 | **as any使用** | 12处 | 较v1.0减少67.6% |
 | **TypeScript错误** | 0 | IDE显示0个Error |
@@ -494,7 +497,7 @@ pnpm vitest run --inspect-brk src/app/services/BinanceService.test.ts
 - [README.md](README.md) - 项目概述与快速开始
 - [CONTRIBUTING.md](CONTRIBUTING.md) - 贡献指南
 - [TESTING.md](TESTING.md) - 测试最佳实践
-- [docs/1001-团队规范-001-开发标准.md](docs/1001-团队规范-001-开发标准.md) - 团队规范
+- [docs/YYC3-团队通用-标准规范/YYC3-团队规范-开发标准.md](docs/YYC3-团队通用-标准规范/YYC3-团队规范-开发标准.md) - 团队规范
 
 ---
 

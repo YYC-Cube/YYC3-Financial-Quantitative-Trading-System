@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔐 安全漏洞上报
+    url: https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System/security/policy
+    about: 请勿公开提交安全问题，请通过 SECURITY.md 中说明的渠道私下上报。
+  - name: 💬 讨论与提问
+    url: https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System/discussions
+    about: 一般性问题、想法交流与技术讨论。

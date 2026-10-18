@@ -23,6 +23,16 @@ project: YYC³-QATS
 
 ---
 
+<p align="center">
+  <img src="https://img.shields.io/badge/version-2.3.1-blue.svg?style=flat-square" alt="Version" />
+  <img src="https://img.shields.io/badge/docs-90%2B%20files-informational.svg?style=flat-square" alt="Docs" />
+  <img src="https://img.shields.io/badge/AI%20Family-8%20Members-9b59b6.svg?style=flat-square" alt="AI Family" />
+  <img src="https://img.shields.io/badge/Vite-6.4.3-646CFF.svg?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/React-18.3.1-61DAFB.svg?style=flat-square&logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-6.0.3-3178C6.svg?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License" />
+</p>
+
 # YYC³-QATS 文档架构
 
 ## 核心理念
@@ -35,15 +45,15 @@ project: YYC³-QATS
 ## 技术栈全景图
 
 | 层级 | 技术 | 版本 | 用途 |
-|------|------|------|------|
-| **构建** | Vite | 6.3.5 | 新一代前端构建工具，极速HMR |
+| ------ | ------ | ------ | ------ |
+| **构建** | Vite | 6.4.3 | 新一代前端构建工具，极速HMR |
 | **UI库** | React | ^18.3.1 | 声明式UI组件库 |
-| **语言** | TypeScript | ^5.x | 类型安全开发 (严格模式) |
+| **语言** | TypeScript | ^6.0.3 | 类型安全开发 (严格模式) |
 | **样式** | Tailwind CSS | ^4.1.12 | 原子化CSS框架 |
 | **图表** | Recharts + lightweight-charts | 2.15.2 / 5.1.0 | 数据可视化 + 金融图表 |
 | **数据库** | IndexedDB (idb) | ^8.0.3 | 客户端本地存储 |
-| **包管理** | pnpm | 10.x | 快速、节省磁盘的包管理器 |
-| **测试** | Vitest | ^4.1.7 | Vite原生测试框架 |
+| **包管理** | pnpm | 9.x | 快速、节省磁盘的包管理器 |
+| **测试** | Vitest | ^5.0.3 | Vite原生测试框架 |
 | **AI** | BigModel-Z.ai SDK + MCP | 最新 | AI Family 8成员 + 20工具 |
 | **部署** | GitHub + Vite Build | - | 静态构建 + 0379.world |
 
@@ -80,7 +90,7 @@ project: YYC³-QATS
 ## 文档索引
 
 | 序号 | 文档名称 | 描述 | 标签 |
-|------|----------|------|------|
+| ------ | ---------- | ------ | ------ |
 | 1 | [00-项目总览索引/00-001-项目总览手册.md](00-项目总览索引/00-001-项目总览手册.md) | 金融量化交易系统立项核心依据，八大业务模块(行情/策略/风控/量子/数据/工坊/交易/管理)，技术栈(Vite+React+TypeScript+Tailwind+pnpm) | [项目总览],[金融量化],[立项依据] |
 | 2 | [00-项目总览索引/00-002-文档架构导航.md](00-项目总览索引/00-002-文档架构导航.md) | 文档体系导航与索引，快速定位各类文档 | [项目总览],[文档导航],[索引] |
 | 3 | [00-项目总览索引/00-003-快速开始指南.md](00-项目总览索引/00-003-快速开始指南.md) | 项目快速启动：克隆仓库 → pnpm install → pnpm dev → 访问localhost:5173 | [项目总览],[快速开始],[本地开发] |
@@ -120,6 +130,66 @@ project: YYC³-QATS
 | 37 | [05-部署与运维/0501-构建部署/0501-构建部署-001-Vite构建配置.md](05-部署与运维/0501-构建部署/0501-构建部署-001-Vite构建配置.md) | Vite生产构建：代码分割、Tree Shaking、资源压缩、静态产物输出 | [部署],[Vite],[构建] |
 | 38 | [05-部署与运维/0501-构建部署/0501-构建部署-002-部署流程.md](05-部署与运维/0501-构建部署/0501-构建部署-002-部署流程.md) | 部署方案：pnpm build → 静态产物 → GitHub → 0379.world | [部署],[GitHub],[0379.world] |
 
+---
+
+## 文档架构可视化
+
+```text
+docs/
+├── 📖 README.md                       ← 文档总索引（本文件）
+├── 🗂️ 00-项目总览索引/                 ← 立项依据 · 总览手册 · 版本日志
+│   ├── 00-001-项目总览手册.md
+│   ├── 00-002-文档架构导航.md
+│   ├── 00-003-快速开始指南.md
+│   ├── 00-004-核心概念词典.md
+│   └── 00-005-版本更新日志.md
+├── 🏗️ 01-架构设计与技术栈/
+│   ├── 0101-整体架构/                  ← 系统架构总览 / 技术选型 / AI Family 架构
+│   ├── 0102-前端架构/                  ← React 组件体系 / Tailwind / 图表 / 状态管理
+│   └── 0103-数据层架构/                ← IndexedDB / Service Worker PWA
+├── 🧠 02-AI-Family智能引擎/
+│   ├── 0201-核心编排层/                ← 元启·天枢 / 言启·千行
+│   ├── 0202-数据分析层/                ← 语枢·万物 / 预见·先知
+│   ├── 0203-服务支撑层/                ← 千里·伯乐 / 智云·守护 / 格物·宗师 / 创想·灵韵
+│   └── 0204-LLM基座/                   ← BigModel-Z.ai SDK / MCP Server
+├── 💼 03-八大业务模块/
+│   ├── 0301-市场数据/  0302-智能策略/  0303-风险管控/
+│   ├── 0304-量子计算/  0305-数据管理/  0306-量化工坊/
+│   └── 0307-交易中心/  0308-管理后台/
+├── 🧪 04-测试与质量保障/
+│   ├── 0401-测试架构/                  ← 测试分层 / AI Family 测试套件
+│   └── 0402-代码质量/                  ← TypeScript 严格模式 / ESLint 配置
+├── 🚀 05-部署与运维/
+│   └── 0501-构建部署/                  ← Vite 构建配置 / 部署流程
+├── 📐 YYC3-团队通用-标准规范/          ← 团队规范 · 五维驱动 · 文档生成引擎
+└── 🗄️ archive/                         ← 历史归档（Figma 设计稿 / 假设验证）
+```
+
+### 图标图例（Icon Legend）
+
+| 图标 | 域 | 说明 |
+| ------ | ---- | ------ |
+| 📖 | 索引 | 文档入口与导航 |
+| 🗂️ | 总览 | 项目立项 / 版本 / 概念 |
+| 🏗️ | 架构 | 技术栈与分层设计 |
+| 🧠 | AI | AI Family 智能引擎 |
+| 💼 | 业务 | 八大业务模块 |
+| 🧪 | 质量 | 测试与代码质量 |
+| 🚀 | 运维 | 构建与部署 |
+| 📐 | 规范 | 团队标准与方法论 |
+| 🗄️ | 归档 | 历史资产 |
+
+### 治理文件（仓库根目录）
+
+| 文件 | 用途 |
+| ------ | ------ |
+| [LICENSE](../LICENSE) | MIT 许可证 |
+| [CONTRIBUTING.md](../CONTRIBUTING.md) | 贡献指南 |
+| [CODE_OF_CONDUCT.md](../CODE_OF_CONDUCT.md) | 贡献者行为准则 |
+| [SECURITY.md](../SECURITY.md) | 安全政策与漏洞上报 |
+| [DEVELOPMENT.md](../DEVELOPMENT.md) | 开发手册 |
+| [TESTING.md](../TESTING.md) | 测试指南 |
+| [CHANGELOG.md](../CHANGELOG.md) | 变更日志 |
 
 ---
 
@@ -135,8 +205,8 @@ project: YYC³-QATS
 
 ## 快速导航
 
-- **项目仓库**: https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System
-- **在线地址**: https://0379.world
+- **项目仓库**: <https://github.com/YYC-Cube/YYC3-Financial-Quantitative-Trading-System>
+- **在线地址**: <https://0379.world>
 - **本地开发**: `pnpm install && pnpm dev`
 - **构建部署**: `pnpm build` → 静态产物
 - **运行测试**: `pnpm test` (Vitest, 228用例)
