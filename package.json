@@ -117,7 +117,7 @@
     "tailwindcss": "4.1.12",
     "terser": "^5.51.2",
     "typescript": "^6.0.3",
-    "vite": "8.3.4",
+    "vite": "8.3.5",
     "vitest": "^5.0.5"
   },
   "peerDependencies": {
@@ -134,7 +134,7 @@
   },
   "pnpm": {
     "overrides": {
-      "vite": "8.3.4",
+      "vite": "8.3.5",
       "source-map-js": "^1.2.2"
     }
   }
